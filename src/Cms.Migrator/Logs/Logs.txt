@@ -1,0 +1,61 @@
+﻿DEBUG 2018-03-06 11:57:39,050 [1    ] Abp.Modules.AbpModuleManager             - Loading Abp modules...
+DEBUG 2018-03-06 11:57:39,089 [1    ] Abp.Modules.AbpModuleManager             - Found 9 ABP modules in total.
+DEBUG 2018-03-06 11:57:39,316 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Cms.Migrator.CmsMigratorModule, Cms.Migrator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-03-06 11:57:39,319 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Cms.EntityFrameworkCore.CmsEntityFrameworkModule, Cms.EntityFrameworkCore, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-03-06 11:57:39,319 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Cms.CmsCoreModule, Cms.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-03-06 11:57:39,320 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.AbpZeroCoreModule, Abp.ZeroCore, Version=3.4.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-03-06 11:57:39,320 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.AbpZeroCommonModule, Abp.Zero.Common, Version=3.4.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-03-06 11:57:39,320 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AbpKernelModule, Abp, Version=3.4.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-03-06 11:57:39,320 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.EntityFrameworkCore.AbpZeroCoreEntityFrameworkCoreModule, Abp.ZeroCore.EntityFrameworkCore, Version=3.4.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-03-06 11:57:39,321 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.EntityFrameworkCore.AbpEntityFrameworkCoreModule, Abp.EntityFrameworkCore, Version=3.4.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-03-06 11:57:39,321 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.EntityFramework.AbpEntityFrameworkCommonModule, Abp.EntityFramework.Common, Version=3.4.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-03-06 11:57:39,327 [1    ] Abp.Modules.AbpModuleManager             - 9 modules loaded.
+DEBUG 2018-03-06 11:57:39,703 [1    ] ameworkCore.AbpEntityFrameworkCoreModule - Registering DbContext: Cms.EntityFrameworkCore.CmsDbContext, Cms.EntityFrameworkCore, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-03-06 11:57:40,259 [1    ] Abp.Localization.LocalizationManager     - Initializing 3 localization sources.
+DEBUG 2018-03-06 11:57:40,281 [1    ] Abp.Localization.LocalizationManager     - Initialized localization source: Abp
+DEBUG 2018-03-06 11:57:40,287 [1    ] Abp.Localization.LocalizationManager     - Initialized localization source: AbpZero
+DEBUG 2018-03-06 11:57:40,292 [1    ] Abp.Localization.LocalizationManager     - Initialized localization source: Cms
+INFO  2018-03-06 11:57:40,561 [1    ] Cms.Migrator.Log                         - Host database: server=localhost;database=CmsDb;trusted_connection=True
+INFO  2018-03-06 11:57:40,561 [1    ] Cms.Migrator.Log                         - Continue to migration for this host database and all tenants..? (Y/N): 
+INFO  2018-03-06 11:57:58,174 [1    ] Cms.Migrator.Log                         - HOST database migration started...
+INFO  2018-03-06 11:57:58,238 [1    ] Cms.Migrator.Log                         - An error occured during migration of host database:
+INFO  2018-03-06 11:57:58,284 [1    ] Cms.Migrator.Log                         - System.ArgumentException: Option 'trusted_connection' not supported.
+   at MySql.Data.MySqlClient.MySqlConnectionStringOption.GetOptionForKey(String key) in C:\projects\mysqlconnector\src\MySqlConnector\MySql.Data.MySqlClient\MySqlConnectionStringBuilder.cs:line 298
+   at MySql.Data.MySqlClient.MySqlConnectionStringBuilder.set_Item(String key, Object value) in C:\projects\mysqlconnector\src\MySqlConnector\MySql.Data.MySqlClient\MySqlConnectionStringBuilder.cs:line 226
+   at System.Data.Common.DbConnectionStringBuilder.set_ConnectionString(String value)
+   at Microsoft.EntityFrameworkCore.MySqlDbContextOptionsExtensions.UseMySql(DbContextOptionsBuilder optionsBuilder, String connectionString, Action`1 mySqlOptionsAction)
+   at Microsoft.EntityFrameworkCore.MySqlDbContextOptionsExtensions.UseMySql[TContext](DbContextOptionsBuilder`1 optionsBuilder, String connectionString, Action`1 mySqlOptionsAction)
+   at Cms.EntityFrameworkCore.CmsDbContextConfigurer.Configure(DbContextOptionsBuilder`1 builder, String connectionString) in /Users/fuyun/GitHub/scfido/AbpCms/src/Cms.EntityFrameworkCore/EntityFrameworkCore/CmsDbContextConfigurer.cs:line 10
+   at Cms.EntityFrameworkCore.CmsEntityFrameworkModule.<>c.<PreInitialize>b__8_0(AbpDbContextConfiguration`1 options) in /Users/fuyun/GitHub/scfido/AbpCms/src/Cms.EntityFrameworkCore/EntityFrameworkCore/CmsEntityFrameworkModule.cs:line 31
+   at Abp.EntityFrameworkCore.DefaultDbContextResolver.CreateOptions[TDbContext](String connectionString, DbConnection existingConnection) in D:\Github\aspnetboilerplate\src\Abp.EntityFrameworkCore\EntityFrameworkCore\DefaultDbContextResolver.cs:line 90
+   at Abp.EntityFrameworkCore.DefaultDbContextResolver.Resolve[TDbContext](String connectionString, DbConnection existingConnection) in D:\Github\aspnetboilerplate\src\Abp.EntityFrameworkCore\EntityFrameworkCore\DefaultDbContextResolver.cs:line 50
+   at Abp.Zero.EntityFrameworkCore.AbpZeroDbMigrator`1.CreateOrMigrate(AbpTenantBase tenant, Action`1 seedAction) in D:\Github\aspnetboilerplate\src\Abp.ZeroCore.EntityFrameworkCore\Zero\EntityFrameworkCore\AbpZeroDbMigrator.cs:line 71
+   at Cms.Migrator.MultiTenantMigrateExecuter.Run(Boolean skipConnVerification) in /Users/fuyun/GitHub/scfido/AbpCms/src/Cms.Migrator/MultiTenantMigrateExecuter.cs:line 62
+INFO  2018-03-06 11:57:58,284 [1    ] Cms.Migrator.Log                         - Canceled migrations.
+DEBUG 2018-03-06 11:58:14,151 [1    ] Abp.Modules.AbpModuleManager             - Shutting down has been started
+DEBUG 2018-03-06 11:58:14,152 [1    ] Abp.Modules.AbpModuleManager             - Shutting down completed.
+DEBUG 2018-03-06 12:33:30,435 [1    ] Abp.Modules.AbpModuleManager             - Loading Abp modules...
+DEBUG 2018-03-06 12:33:30,486 [1    ] Abp.Modules.AbpModuleManager             - Found 9 ABP modules in total.
+DEBUG 2018-03-06 12:33:30,718 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Cms.Migrator.CmsMigratorModule, Cms.Migrator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-03-06 12:33:30,722 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Cms.EntityFrameworkCore.CmsEntityFrameworkModule, Cms.EntityFrameworkCore, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-03-06 12:33:30,723 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Cms.CmsCoreModule, Cms.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-03-06 12:33:30,723 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.AbpZeroCoreModule, Abp.ZeroCore, Version=3.4.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-03-06 12:33:30,723 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.AbpZeroCommonModule, Abp.Zero.Common, Version=3.4.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-03-06 12:33:30,724 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AbpKernelModule, Abp, Version=3.4.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-03-06 12:33:30,724 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.EntityFrameworkCore.AbpZeroCoreEntityFrameworkCoreModule, Abp.ZeroCore.EntityFrameworkCore, Version=3.4.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-03-06 12:33:30,725 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.EntityFrameworkCore.AbpEntityFrameworkCoreModule, Abp.EntityFrameworkCore, Version=3.4.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-03-06 12:33:30,725 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.EntityFramework.AbpEntityFrameworkCommonModule, Abp.EntityFramework.Common, Version=3.4.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-03-06 12:33:30,730 [1    ] Abp.Modules.AbpModuleManager             - 9 modules loaded.
+DEBUG 2018-03-06 12:33:31,087 [1    ] ameworkCore.AbpEntityFrameworkCoreModule - Registering DbContext: Cms.EntityFrameworkCore.CmsDbContext, Cms.EntityFrameworkCore, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-03-06 12:33:31,632 [1    ] Abp.Localization.LocalizationManager     - Initializing 3 localization sources.
+DEBUG 2018-03-06 12:33:31,651 [1    ] Abp.Localization.LocalizationManager     - Initialized localization source: Abp
+DEBUG 2018-03-06 12:33:31,663 [1    ] Abp.Localization.LocalizationManager     - Initialized localization source: AbpZero
+DEBUG 2018-03-06 12:33:31,670 [1    ] Abp.Localization.LocalizationManager     - Initialized localization source: Cms
+INFO  2018-03-06 12:33:31,923 [1    ] Cms.Migrator.Log                         - Host database: server=localhost;database=cms;uid=*****;pwd=*****
+INFO  2018-03-06 12:33:31,923 [1    ] Cms.Migrator.Log                         - Continue to migration for this host database and all tenants..? (Y/N): 
+INFO  2018-03-06 12:33:37,550 [1    ] Cms.Migrator.Log                         - HOST database migration started...
+INFO  2018-03-06 12:33:41,682 [1    ] Cms.Migrator.Log                         - HOST database migration completed.
+INFO  2018-03-06 12:33:41,682 [1    ] Cms.Migrator.Log                         - --------------------------------------------------------
+INFO  2018-03-06 12:33:41,738 [1    ] Cms.Migrator.Log                         - All databases have been migrated.
+DEBUG 2018-03-06 12:33:49,751 [1    ] Abp.Modules.AbpModuleManager             - Shutting down has been started
+DEBUG 2018-03-06 12:33:49,752 [1    ] Abp.Modules.AbpModuleManager             - Shutting down completed.
