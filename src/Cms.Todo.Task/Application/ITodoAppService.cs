@@ -6,9 +6,9 @@ using Cms.Todo.Application.Dtos;
 
 namespace Cms.Todo.Application
 {
-    public interface ITodoAppServices : IApplicationService
+    public interface ITodoAppService : IApplicationService
     {
-        Task<IList<TodoDto>>GetTodos(GetTodosInput input);
+        Task<IList<TodoDto>>GetTodos();
 
     }
 }

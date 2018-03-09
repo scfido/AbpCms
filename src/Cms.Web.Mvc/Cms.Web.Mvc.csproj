@@ -26,12 +26,12 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Cms.Todo.Web\Cms.Todo.Web.csproj" />
+    <ProjectReference Include="..\..\Cms.Todo.Web\Cms.Todo.Web.csproj" />
     <ProjectReference Include="..\Cms.Web.Core\Cms.Web.Core.csproj" />
-    <ProjectReference Include="..\Cms.Todo.Task\Cms.Todo.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.0.1" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.2">
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>

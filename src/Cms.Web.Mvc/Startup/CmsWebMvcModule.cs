@@ -7,7 +7,7 @@ using Cms.Todo.Web;
 
 namespace Cms.Web.Startup
 {
-    [DependsOn(typeof(CmsWebCoreModule))]
+    [DependsOn(typeof(CmsWebCoreModule), typeof(TodoWebModule))]
     public class CmsWebMvcModule : AbpModule
     {
         private readonly IHostingEnvironment _env;

@@ -6,13 +6,13 @@ using Cms.Todo.Application.Dtos;
 
 namespace Cms.Todo.Application
 {
-    public class TodoAppServices : ApplicationService, ITodoAppServices
+    public class TodoAppService : ApplicationService, ITodoAppService
     {
-        public TodoAppServices()
+        public TodoAppService()
         {
         }
 
-        public async Task<IList<TodoDto>> GetTodos(GetTodosInput input)
+        public async Task<IList<TodoDto>> GetTodos()
         {
             return new List<TodoDto>
             { 

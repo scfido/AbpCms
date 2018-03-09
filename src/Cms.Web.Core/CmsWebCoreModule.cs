@@ -11,8 +11,6 @@ using Abp.Zero.Configuration;
 using Cms.Authentication.JwtBearer;
 using Cms.Configuration;
 using Cms.EntityFrameworkCore;
-using Cms.Todo.Web;
-using Cms.Todo;
 
 #if FEATURE_SIGNALR
 using Abp.Web.SignalR;
@@ -23,7 +21,6 @@ using Abp.AspNetCore.SignalR;
 namespace Cms
 {
     [DependsOn(
-        typeof(TodoWebModule),
          typeof(CmsApplicationModule),
          typeof(CmsEntityFrameworkModule),
          typeof(AbpAspNetCoreModule)
@@ -57,11 +54,6 @@ namespace Cms
                  .CreateControllersForAppServices(
                      typeof(CmsApplicationModule).GetAssembly()
                  );
-
-            Configuration.Modules.AbpAspNetCore()
-                .CreateControllersForAppServices(
-                    typeof(TodoApplicationModule).GetAssembly()
-                );
 
             ConfigureTokenAuth();
         }

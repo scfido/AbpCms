@@ -10,12 +10,14 @@ namespace Cms.Todo
     {
         public override void PreInitialize()
         {
+            Configuration.Modules.AbpAspNetCore()
+                .CreateControllersForAppServices(typeof(TodoApplicationModule).GetAssembly()
+                );
         }
 
         public override void Initialize()
         {
             IocManager.RegisterAssemblyByConvention(typeof(TodoApplicationModule).GetAssembly());
-            //Configuration.Modules.AbpWebApi().DynamicApiControllerBuilder.For<ITodoAppServices>("todo").Build();
         }
 
     }

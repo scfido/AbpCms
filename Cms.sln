@@ -7,25 +7,25 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{AFAA0841-BD9
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{F10AA149-2626-486E-85BB-9CD5365F3016}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cms.Core", "src\Cms.Core\Cms.Core.csproj", "{0FA75A5B-AB83-4FD0-B545-279774C01E87}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cms.Core", "src\Cms.Core\Cms.Core.csproj", "{0FA75A5B-AB83-4FD0-B545-279774C01E87}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cms.Application", "src\Cms.Application\Cms.Application.csproj", "{3870C648-4AEA-4B85-BA3F-F2F63B96136A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cms.Application", "src\Cms.Application\Cms.Application.csproj", "{3870C648-4AEA-4B85-BA3F-F2F63B96136A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cms.Tests", "test\Cms.Tests\Cms.Tests.csproj", "{0D4C5D00-C144-4213-A007-4B8944113AB1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cms.Tests", "test\Cms.Tests\Cms.Tests.csproj", "{0D4C5D00-C144-4213-A007-4B8944113AB1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cms.Migrator", "src\Cms.Migrator\Cms.Migrator.csproj", "{880B3591-E057-46FE-B525-10BD83828B93}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cms.Migrator", "src\Cms.Migrator\Cms.Migrator.csproj", "{880B3591-E057-46FE-B525-10BD83828B93}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cms.Web.Host", "src\Cms.Web.Host\Cms.Web.Host.csproj", "{38E184BD-E874-4633-A947-AED4FDB73F40}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cms.Web.Host", "src\Cms.Web.Host\Cms.Web.Host.csproj", "{38E184BD-E874-4633-A947-AED4FDB73F40}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cms.Web.Core", "src\Cms.Web.Core\Cms.Web.Core.csproj", "{22CFE0D2-8DCA-42D7-AD7D-784C3862493F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cms.Web.Core", "src\Cms.Web.Core\Cms.Web.Core.csproj", "{22CFE0D2-8DCA-42D7-AD7D-784C3862493F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cms.Web.Mvc", "src\Cms.Web.Mvc\Cms.Web.Mvc.csproj", "{A2213374-BB48-48FD-BBD4-81E6A961D866}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cms.Web.Mvc", "src\Cms.Web.Mvc\Cms.Web.Mvc.csproj", "{A2213374-BB48-48FD-BBD4-81E6A961D866}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cms.EntityFrameworkCore", "src\Cms.EntityFrameworkCore\Cms.EntityFrameworkCore.csproj", "{E0580562-F8F2-4EBB-B07A-ABFC6F2C314F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cms.EntityFrameworkCore", "src\Cms.EntityFrameworkCore\Cms.EntityFrameworkCore.csproj", "{E0580562-F8F2-4EBB-B07A-ABFC6F2C314F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cms.Todo", "src\Cms.Todo.Task\Cms.Todo.csproj", "{0BBA15B5-3401-4911-8393-46DA816B20E7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cms.Todo", "src\Cms.Todo.Task\Cms.Todo.csproj", "{0BBA15B5-3401-4911-8393-46DA816B20E7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cms.Todo.Web", "src\Cms.Todo.Web\Cms.Todo.Web.csproj", "{00D8A17E-1D80-4B2F-8B81-21F38DE6E7F5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cms.Todo.Web", "Cms.Todo.Web\Cms.Todo.Web.csproj", "{CC03E65E-5415-48DF-B90A-E06566719239}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -69,10 +69,10 @@ Global
 		{0BBA15B5-3401-4911-8393-46DA816B20E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0BBA15B5-3401-4911-8393-46DA816B20E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0BBA15B5-3401-4911-8393-46DA816B20E7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{00D8A17E-1D80-4B2F-8B81-21F38DE6E7F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{00D8A17E-1D80-4B2F-8B81-21F38DE6E7F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{00D8A17E-1D80-4B2F-8B81-21F38DE6E7F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{00D8A17E-1D80-4B2F-8B81-21F38DE6E7F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC03E65E-5415-48DF-B90A-E06566719239}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC03E65E-5415-48DF-B90A-E06566719239}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC03E65E-5415-48DF-B90A-E06566719239}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC03E65E-5415-48DF-B90A-E06566719239}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -87,6 +87,9 @@ Global
 		{A2213374-BB48-48FD-BBD4-81E6A961D866} = {AFAA0841-BD93-466F-B8F4-FB4EEC86F1FC}
 		{E0580562-F8F2-4EBB-B07A-ABFC6F2C314F} = {AFAA0841-BD93-466F-B8F4-FB4EEC86F1FC}
 		{0BBA15B5-3401-4911-8393-46DA816B20E7} = {AFAA0841-BD93-466F-B8F4-FB4EEC86F1FC}
-		{00D8A17E-1D80-4B2F-8B81-21F38DE6E7F5} = {AFAA0841-BD93-466F-B8F4-FB4EEC86F1FC}
+		{CC03E65E-5415-48DF-B90A-E06566719239} = {AFAA0841-BD93-466F-B8F4-FB4EEC86F1FC}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EA244488-98E9-47F3-8681-4FD65D089EDD}
 	EndGlobalSection
 EndGlobal
