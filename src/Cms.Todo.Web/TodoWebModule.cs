@@ -1,12 +1,10 @@
 ﻿using System.Reflection;
 using Abp.Modules;
-using Abp.Web.Mvc;
 
 namespace Cms.Todo.Web
 {
     [DependsOn(
-         typeof(TodoModule),
-         typeof(AbpWebMvcModule)
+         typeof(TodoApplicationModule)
          )]
     public class TodoWebModule : AbpModule
     {

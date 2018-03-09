@@ -21,6 +21,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Cms.Application\Cms.Application.csproj" />
     <ProjectReference Include="..\Cms.EntityFrameworkCore\Cms.EntityFrameworkCore.csproj" />
+    <ProjectReference Include="..\Cms.Todo.Web\Cms.Todo.Web.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="System.ValueTuple" Version="4.4.0" />

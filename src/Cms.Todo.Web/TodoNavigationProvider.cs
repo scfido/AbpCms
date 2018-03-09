@@ -14,7 +14,7 @@ namespace Cms.Todo.Web
                         "Todo.Index",
                         new FixedLocalizableString("Todo"),
                         url: "/todo",
-                        icon: "fa fa-list"
+                        icon: "list"
                         )
                 );
         }

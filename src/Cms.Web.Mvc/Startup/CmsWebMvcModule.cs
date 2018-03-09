@@ -3,11 +3,11 @@ using Microsoft.Extensions.Configuration;
 using Abp.Modules;
 using Abp.Reflection.Extensions;
 using Cms.Configuration;
-using Cms.Todo;
+using Cms.Todo.Web;
 
 namespace Cms.Web.Startup
 {
-    [DependsOn(typeof(CmsWebCoreModule), typeof(TodoModule))]
+    [DependsOn(typeof(CmsWebCoreModule))]
     public class CmsWebMvcModule : AbpModule
     {
         private readonly IHostingEnvironment _env;

@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="abp" Version="3.4.0" />
-    <PackageReference Include="Abp.Web.Api" Version="3.4.0" />
+    <PackageReference Include="Abp.AspNetCore" Version="3.4.0" />
   </ItemGroup>
 
   <ItemGroup>
