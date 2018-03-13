@@ -1,5 +1,7 @@
 ﻿using System.Reflection;
+using Abp.AspNetCore.Configuration;
 using Abp.Modules;
+using Abp.Reflection.Extensions;
 
 namespace Cms.Todo.Web
 {
@@ -12,6 +14,9 @@ namespace Cms.Todo.Web
         public override void PreInitialize()
         {
 
+            Configuration.Modules.AbpAspNetCore()
+                .CreateControllersForAppServices(typeof(TodoApplicationModule).GetAssembly()
+            );
             //Configure navigation/menu
             Configuration.Navigation.Providers.Add<TodoNavigationProvider>();
         }

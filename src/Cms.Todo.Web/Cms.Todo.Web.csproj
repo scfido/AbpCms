@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\Cms.Todo.Task\Cms.Todo.csproj" />
+    <ProjectReference Include="..\Cms.Todo\Cms.Todo.csproj" />
   </ItemGroup>
 
 </Project>

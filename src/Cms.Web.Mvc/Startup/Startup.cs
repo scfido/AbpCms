@@ -12,6 +12,7 @@ using Cms.Authentication.JwtBearer;
 using Cms.Configuration;
 using Cms.Identity;
 using Cms.Web.Resources;
+using Swashbuckle.AspNetCore.Swagger;
 
 #if FEATURE_SIGNALR
 using Owin;
@@ -48,6 +49,12 @@ namespace Cms.Web.Startup
             services.AddSignalR();
 #endif
 
+            services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1", new Info { Title = "CMS API", Version = "v1" });
+                options.DocInclusionPredicate((docName, description) => true);
+            });
+
             // Configure Abp and Dependency Injection
             return services.AddAbp<CmsWebMvcModule>(
                 // Configure Log4Net logging
@@ -75,6 +82,14 @@ namespace Cms.Web.Startup
             app.UseAuthentication();
 
             app.UseJwtTokenMiddleware();
+
+            app.UseSwagger();
+            //Enable middleware to serve swagger - ui assets(HTML, JS, CSS etc.)
+            app.UseSwaggerUI(options =>
+            {
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "CMS API V1");
+            }); //URL: /swagger 
+
 
 #if FEATURE_SIGNALR
             // Integrate with OWIN
