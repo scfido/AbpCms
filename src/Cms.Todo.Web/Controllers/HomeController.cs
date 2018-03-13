@@ -4,10 +4,10 @@ using System;
 
 namespace Cms.Todo.Web.Controllers
 {
-    [Area("todo")]
-    public class HomeController : AbpController
+    [Area("Todo")]
+    public class TodoController : AbpController
     {
-        public HomeController()
+        public TodoController()
         {
         }
 

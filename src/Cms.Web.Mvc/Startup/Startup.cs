@@ -78,7 +78,7 @@ namespace Cms.Web.Startup
             }
 
             app.UseStaticFiles();
-
+            app.UseEmbeddedFiles(); //Allows to expose embedded files to the web!
             app.UseAuthentication();
 
             app.UseJwtTokenMiddleware();

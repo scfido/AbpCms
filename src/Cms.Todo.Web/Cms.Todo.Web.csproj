@@ -13,4 +13,9 @@
     <ProjectReference Include="..\Cms.Todo\Cms.Todo.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <EmbeddedResource Include="Views\**\*.*" />
+    <EmbeddedResource Include="Areas\**\*.*" />
+  </ItemGroup>
+  
 </Project>

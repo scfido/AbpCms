@@ -1,0 +1,19 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Todo";
+}
+@section scripts
+{
+    <environment names="Development">
+        <script src="~/Areas/Todo/Views/Todo/Index.js" asp-append-version="true"></script>
+    </environment>
+
+    <environment names="Staging,Production">
+        <script src="~/Areas/Todo/Views/Home/Index.min.js" asp-append-version="true"></script>
+    </environment>
+}
+
+<h2>Todo in area</h2>
+<div id="status">Index.js运行异常</div>
+

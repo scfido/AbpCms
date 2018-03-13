@@ -11,6 +11,9 @@
             "preLaunchTask": "build",
             "program": "${workspaceFolder}/src/Cms.Web.Mvc/bin/Debug/netcoreapp2.0/Cms.Web.Mvc.dll",
             "args": [],
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+              },
             "cwd": "${workspaceFolder}/src/Cms.Web.Mvc",
             "console": "internalConsole",
             "stopAtEntry": false,
