@@ -17,5 +17,10 @@
     <EmbeddedResource Include="Views\**\*.*" />
     <EmbeddedResource Include="Areas\**\*.*" />
   </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Areas\Todo\Views\Home\Index.cshtml" />
+    <None Remove="Areas\Todo\Views\Home\Index.js" />
+  </ItemGroup>
   
 </Project>

@@ -5,9 +5,9 @@ using System;
 namespace Cms.Todo.Web.Controllers
 {
     [Area("Todo")]
-    public class TodoController : AbpController
+    public class HomeController : AbpController
     {
-        public TodoController()
+        public HomeController()
         {
         }
 
@@ -16,4 +16,5 @@ namespace Cms.Todo.Web.Controllers
             return View();
         }
     }
+
 }
