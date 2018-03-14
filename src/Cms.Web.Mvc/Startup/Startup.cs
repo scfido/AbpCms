@@ -13,6 +13,7 @@ using Cms.Configuration;
 using Cms.Identity;
 using Cms.Web.Resources;
 using Swashbuckle.AspNetCore.Swagger;
+using System.IO;
 
 #if FEATURE_SIGNALR
 using Owin;
@@ -27,18 +28,31 @@ namespace Cms.Web.Startup
     public class Startup
     {
         private readonly IConfigurationRoot _appConfiguration;
+        private readonly IHostingEnvironment env;
+        private readonly string devProjectPath;
 
         public Startup(IHostingEnvironment env)
         {
             _appConfiguration = env.GetAppConfiguration();
+            this.env = env;
+            devProjectPath = Path.GetFullPath(Path.Combine(env.ContentRootPath, "..\\Cms.Todo.Web"));
+            Console.WriteLine("当前开发项目路径：" + devProjectPath);
         }
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             // MVC
-            services.AddMvc(
+            var mvcBuilder = services.AddMvc(
                 options => options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute())
             );
+
+            if (env.IsDevelopment())
+            {
+                //开发模式时，直接读取开发项目的View文件，产品模式则从dll的资源中读取。
+                mvcBuilder.AddRazorOptions(option => option.FileProviders.Add(
+                 new Microsoft.Extensions.FileProviders.PhysicalFileProvider(devProjectPath)
+                ));
+            }
 
             IdentityRegistrar.Register(services);
             AuthConfigurer.Configure(services, _appConfiguration);
@@ -78,7 +92,16 @@ namespace Cms.Web.Startup
             }
 
             app.UseStaticFiles();
-            app.UseEmbeddedFiles(); //Allows to expose embedded files to the web!
+            if (env.IsDevelopment())
+            {
+                //开发模式时，直接读取开发项目的js、css、image等静态文件，产品模式则从dll的资源中读取。
+                app.UseStaticFiles(new StaticFileOptions()
+                {
+                    FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(devProjectPath)
+                });
+            }
+
+            //app.UseEmbeddedFiles(); //Allows to expose embedded files to the web!
             app.UseAuthentication();
 
             app.UseJwtTokenMiddleware();
