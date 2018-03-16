@@ -14,6 +14,7 @@ using Cms.Identity;
 using Cms.Web.Resources;
 using Swashbuckle.AspNetCore.Swagger;
 using System.IO;
+using System.Reflection;
 
 #if FEATURE_SIGNALR
 using Owin;
@@ -111,6 +112,9 @@ namespace Cms.Web.Startup
             app.UseSwaggerUI(options =>
             {
                 options.SwaggerEndpoint("/swagger/v1/swagger.json", "CMS API V1");
+                //c.InjectJavaScript(Assembly.GetAssembly(typeof(AbpProjectNameWebApiModule)), "AbpCompanyName.AbpProjectName.Api.Scripts.Swagger-Custom.js");
+                //Enable middleware to serve swagger - ui assets(HTML, JS, CSS etc.)
+                options.IndexStream = () => GetType().GetTypeInfo().Assembly.GetManifestResourceStream("Cms.Web.Mvc.index.html"); // requires file to be added as an embedded resource
             }); //URL: /swagger 
 
 

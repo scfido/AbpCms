@@ -2,15 +2,21 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Abp.Application.Services;
+using Abp.Domain.Repositories;
 using Cms.Todo.Application.Dtos;
+using Cms.Todo.Core;
+using Cms.Todo.Domain.Repositories;
 
 namespace Cms.Todo.Application
 {
-    public class TodoAppService : ApplicationService, ITodoAppService
+    public class TodoAppService : AsyncCrudAppService<Core.Todo, TodoDto>, ITodoAppService
     {
-        public TodoAppService()
+        public TodoAppService(ITodoRepository repository) : base(repository)
         {
+            
         }
+
+        
 
         public async Task<IList<TodoDto>> GetTodos()
         {
