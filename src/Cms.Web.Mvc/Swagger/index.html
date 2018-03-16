@@ -69,33 +69,62 @@
 
     <!-- Workaround for https://github.com/swagger-api/swagger-editor/issues/1371 -->
     <script>
-  if (window.navigator.userAgent.indexOf("Edge") > -1) {
-    console.log("Removing native Edge fetch in favor of swagger-ui's polyfill")
-    window.fetch = undefined;
-  }
+        if (window.navigator.userAgent.indexOf("Edge") > -1) {
+            console.log("Removing native Edge fetch in favor of swagger-ui's polyfill")
+            window.fetch = undefined;
+        }
     </script>
 
     <script src="./swagger-ui-bundle.js"></script>
     <script src="./swagger-ui-standalone-preset.js"></script>
     <script>
-  window.onload = function () {
-    var configObject = JSON.parse('%(ConfigObject)');
-    var oauthConfigObject = JSON.parse('%(OAuthConfigObject)');
+        window.onload = function () {
+            var configObject = JSON.parse('%(ConfigObject)');
+            var oauthConfigObject = JSON.parse('%(OAuthConfigObject)');
 
-    // Apply mandatory parameters
-    configObject.dom_id = "#swagger-ui";
-    configObject.presets = [SwaggerUIBundle.presets.apis, SwaggerUIStandalonePreset];
-    configObject.layout = "StandaloneLayout";
+            // Apply mandatory parameters
+            configObject.dom_id = "#swagger-ui";
+            configObject.presets = [SwaggerUIBundle.presets.apis, SwaggerUIStandalonePreset];
+            configObject.layout = "StandaloneLayout";
 
-    if (!configObject.hasOwnProperty("oauth2RedirectUrl"))
-      configObject.oauth2RedirectUrl = window.location + "oauth2-redirect.html"; // use the built-in default
+            if (!configObject.hasOwnProperty("oauth2RedirectUrl"))
+                configObject.oauth2RedirectUrl = window.location + "oauth2-redirect.html"; // use the built-in default
 
-    // Build a system
-    const ui = SwaggerUIBundle(configObject);
+            var getCookieValue = function (key) {
+                var equalities = document.cookie.split('; ');
+                for (var i = 0; i < equalities.length; i++) {
+                    if (!equalities[i]) {
+                        continue;
+                    }
 
-    // Apply OAuth config
-    ui.initOAuth(oauthConfigObject);
-  }
+                    var splitted = equalities[i].split('=');
+                    if (splitted.length !== 2) {
+                        continue;
+                    }
+
+                    if (decodeURIComponent(splitted[0]) === key) {
+                        return decodeURIComponent(splitted[1] || '');
+                    }
+                }
+
+                return null;
+            };
+
+            configObject.configs = {
+                preFetch: function (req) {
+                    var token = getCookieValue("XSRF-TOKEN");
+                    req.headers["X-XSRF-TOKEN"] = token;
+                    return req;
+                }
+            }
+
+            // Build a system
+            const ui = SwaggerUIBundle(configObject);
+
+            // Apply OAuth config
+            ui.initOAuth(oauthConfigObject);
+
+        }
     </script>
 </body>
 

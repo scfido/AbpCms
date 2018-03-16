@@ -1,4 +1,5 @@
-﻿using Abp.EntityFrameworkCore;
+﻿using Abp.AutoMapper;
+using Abp.EntityFrameworkCore;
 using Abp.EntityFrameworkCore.Configuration;
 using Abp.Modules;
 using Abp.Reflection.Extensions;
@@ -18,6 +19,9 @@ namespace Cms.Todo
 
         public override void PreInitialize()
         {
+            //Adding custom AutoMapper configuration
+            Configuration.Modules.AbpAutoMapper().Configurators.Add(CustomDtoMapper.CreateMappings);
+
             if (!SkipDbContextRegistration)
             {
                 Configuration.Modules.AbpEfCore().AddDbContext<TodoDbContext>(options =>

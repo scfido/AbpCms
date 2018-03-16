@@ -112,9 +112,10 @@ namespace Cms.Web.Startup
             app.UseSwaggerUI(options =>
             {
                 options.SwaggerEndpoint("/swagger/v1/swagger.json", "CMS API V1");
-                //c.InjectJavaScript(Assembly.GetAssembly(typeof(AbpProjectNameWebApiModule)), "AbpCompanyName.AbpProjectName.Api.Scripts.Swagger-Custom.js");
-                //Enable middleware to serve swagger - ui assets(HTML, JS, CSS etc.)
-                options.IndexStream = () => GetType().GetTypeInfo().Assembly.GetManifestResourceStream("Cms.Web.Mvc.index.html"); // requires file to be added as an embedded resource
+                options.DocumentTitle = "CMS API";
+                //在Swagger原页面基础上增加了request 头填写X-XSRF-TOKEN参数，解决Swagger Post方法不能调用的问题。
+                //注意Swagger\index.html文件必须设为嵌入资源。
+                options.IndexStream = () => GetType().GetTypeInfo().Assembly.GetManifestResourceStream("Cms.Web.Mvc.Swagger.index.html"); 
             }); //URL: /swagger 
 
 

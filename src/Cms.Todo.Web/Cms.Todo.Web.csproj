@@ -12,8 +12,5 @@
   <ItemGroup>
     <ProjectReference Include="..\Cms.Todo\Cms.Todo.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-  </ItemGroup>
   
 </Project>
