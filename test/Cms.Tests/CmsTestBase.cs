@@ -14,10 +14,11 @@ using Cms.EntityFrameworkCore;
 using Cms.EntityFrameworkCore.Seed.Host;
 using Cms.EntityFrameworkCore.Seed.Tenants;
 using Cms.MultiTenancy;
+using Abp.Modules;
 
 namespace Cms.Tests
 {
-    public abstract class CmsTestBase : AbpIntegratedTestBase<CmsTestModule>
+    public abstract class CmsTestBase<TMoudle> : AbpIntegratedTestBase<TMoudle> where TMoudle : AbpModule
     {
         protected CmsTestBase()
         {
@@ -206,5 +207,10 @@ namespace Cms.Tests
             var tenantId = AbpSession.GetTenantId();
             return await UsingDbContext(context => context.Tenants.SingleAsync(t => t.Id == tenantId));
         }
+    }
+
+    public abstract class CmsTestBase : CmsTestBase<CmsTestModule>
+    {
+
     }
 }
