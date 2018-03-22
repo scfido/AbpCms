@@ -10,27 +10,7 @@ using System.Text;
 
 namespace Cms.Todo.EntityFrameworkCore.Repositories
 {
-
-    public abstract class TodoRepositoryBase<TEntity, TPrimaryKey> : EfCoreRepositoryBase<TodoDbContext, TEntity, TPrimaryKey>
-           where TEntity : class, IEntity<TPrimaryKey>
-    {
-        protected TodoRepositoryBase(IDbContextProvider<TodoDbContext> dbContextProvider)
-            : base(dbContextProvider)
-        {
-        }
-    }
-
-    public abstract class TodoRepositoryBase<TEntity> : TodoRepositoryBase<TEntity, int>
-        where TEntity : class, IEntity<int>
-    {
-        protected TodoRepositoryBase(IDbContextProvider<TodoDbContext> dbContextProvider)
-            : base(dbContextProvider)
-        {
-        }
-    }
-
-
-    public class TodoRepository : TodoRepositoryBase<Core.Todo>, ITodoRepository
+    public class TodoRepository : EfCoreRepositoryBase<TodoDbContext, Core.Todo>, ITodoRepository
     {
         public TodoRepository(IDbContextProvider<TodoDbContext> dbContextProvider) : base(dbContextProvider)
         {

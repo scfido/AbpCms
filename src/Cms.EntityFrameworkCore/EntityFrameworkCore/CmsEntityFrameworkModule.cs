@@ -3,11 +3,12 @@ using Abp.Modules;
 using Abp.Reflection.Extensions;
 using Abp.Zero.EntityFrameworkCore;
 using Cms.EntityFrameworkCore.Seed;
+using Microsoft.EntityFrameworkCore;
 
 namespace Cms.EntityFrameworkCore
 {
     [DependsOn(
-        typeof(CmsCoreModule), 
+        typeof(CmsCoreModule),
         typeof(AbpZeroCoreEntityFrameworkCoreModule))]
     public class CmsEntityFrameworkModule : AbpModule
     {
@@ -24,11 +25,11 @@ namespace Cms.EntityFrameworkCore
                 {
                     if (options.ExistingConnection != null)
                     {
-                        CmsDbContextConfigurer.Configure(options.DbContextOptions, options.ExistingConnection);
+                        CmsDbContextConfigurer<CmsDbContext>.Configure(options.DbContextOptions, options.ExistingConnection);
                     }
                     else
                     {
-                        CmsDbContextConfigurer.Configure(options.DbContextOptions, options.ConnectionString);
+                        CmsDbContextConfigurer<CmsDbContext>.Configure(options.DbContextOptions, options.ConnectionString);
                     }
                 });
             }

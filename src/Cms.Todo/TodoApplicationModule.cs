@@ -28,13 +28,11 @@ namespace Cms.Todo
                 {
                     if (options.ExistingConnection != null)
                     {
-                        options.DbContextOptions.UseMySql(options.ExistingConnection);
-                        //CmsDbContextConfigurer.Configure(options.DbContextOptions, options.ExistingConnection);
+                        CmsDbContextConfigurer<TodoDbContext>.Configure(options.DbContextOptions, options.ExistingConnection);
                     }
                     else
                     {
-                        options.DbContextOptions.UseMySql(options.ConnectionString);
-                        //CmsDbContextConfigurer.Configure(options.DbContextOptions, options.ConnectionString);
+                        CmsDbContextConfigurer<TodoDbContext>.Configure(options.DbContextOptions, options.ConnectionString);
                     }
                 });
             }

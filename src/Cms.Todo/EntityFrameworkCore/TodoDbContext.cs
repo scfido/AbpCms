@@ -13,7 +13,8 @@ using System.Text;
 
 namespace Cms.Todo.EntityFrameworkCore
 {
-    public class TodoDbContext : CmsBaseDbContext<TodoDbContext>
+    
+    public class TodoDbContext : AbpDbContext
     {
         public TodoDbContext(DbContextOptions<TodoDbContext> options) : base(options)
         {
