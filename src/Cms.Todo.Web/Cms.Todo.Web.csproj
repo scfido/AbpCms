@@ -5,6 +5,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Areas\Todo\Views\Home\Index.cshtml" />
+    <None Remove="Areas\Todo\Views\Home\Index.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Areas\Todo\Views\**\*.*" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Abp" Version="3.4.0" />
     <PackageReference Include="Abp.AspNetCore" Version="3.4.0" />
   </ItemGroup>
