@@ -8,7 +8,7 @@ using System;
 namespace Cms.EntityFrameworkCore
 {
     /* This class is needed to run "dotnet ef ..." commands from command line on development. Not used anywhere else */
-    public class CmsDbContextFactory : CmsDbContextFactory<CmsDbContext> //: IDesignTimeDbContextFactory<CmsDbContext>
+    public class CmsDbContextFactory : CmsDbContextFactory<CmsDbContext> 
     {
     }
 
