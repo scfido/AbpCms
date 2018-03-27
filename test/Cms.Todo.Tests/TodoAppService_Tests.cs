@@ -22,7 +22,7 @@ namespace Cms.Todo.Tests
         [Fact]
         public async Task CreateTodos_Test()
         {
-            var created = await todoAppService.Create(new TodoDto() { Title = "任务1" });
+            var created = await todoAppService.Create(new TodoDto() { Title = "浠诲姟1" });
             var output = await todoAppService.Get(created);
             output.Title.ShouldBe(created.Title);
         }
@@ -31,7 +31,7 @@ namespace Cms.Todo.Tests
         [Fact]
         public async Task GetTodos_Test()
         {
-            await todoAppService.Create(new TodoDto() { Title = "任务1" });
+            await todoAppService.Create(new TodoDto() { Title = "浠诲姟1" });
             var output = await todoAppService.GetAll(new PagedAndSortedResultRequestDto { MaxResultCount = 20, SkipCount = 0 });
             output.Items.Count.ShouldBeGreaterThan(0);
         }
@@ -39,17 +39,17 @@ namespace Cms.Todo.Tests
         [Fact]
         public async Task Update_Test()
         {
-            var created = await todoAppService.Create(new TodoDto() { Title = "任务1" });
-            created.Title = "任务10";
+            var created = await todoAppService.Create(new TodoDto() { Title = "浠诲姟1" });
+            created.Title = "浠诲姟10";
             var output = await todoAppService.Update(created);
-            output.Title.ShouldBe("任务10");
+            output.Title.ShouldBe("浠诲姟10");
         }
 
 
         [Fact]
         public async Task DeleteTodos_Test()
         {
-            var created = await todoAppService.Create(new TodoDto() { Title = "任务1" });
+            var created = await todoAppService.Create(new TodoDto() { Title = "浠诲姟1" });
             await todoAppService.Delete(created);
             Should.Throw<EntityNotFoundException>(() => todoAppService.Get(created));
         }
