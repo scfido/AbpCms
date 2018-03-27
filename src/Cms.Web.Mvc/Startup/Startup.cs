@@ -63,12 +63,14 @@ namespace Cms.Web.Startup
 #if FEATURE_SIGNALR_ASPNETCORE
             services.AddSignalR();
 #endif
-
-            services.AddSwaggerGen(options =>
+            if (env.IsDevelopment())
             {
-                options.SwaggerDoc("v1", new Info { Title = "CMS API", Version = "v1" });
-                options.DocInclusionPredicate((docName, description) => true);
-            });
+                services.AddSwaggerGen(options =>
+                {
+                    options.SwaggerDoc("v1", new Info { Title = "CMS API", Version = "v1" });
+                    options.DocInclusionPredicate((docName, description) => true);
+                });
+            }
 
             // Configure Abp and Dependency Injection
             return services.AddAbp<CmsWebMvcModule>(
@@ -107,16 +109,19 @@ namespace Cms.Web.Startup
 
             app.UseJwtTokenMiddleware();
 
-            app.UseSwagger();
-            //Enable middleware to serve swagger - ui assets(HTML, JS, CSS etc.)
-            app.UseSwaggerUI(options =>
+            if (env.IsDevelopment())
             {
-                options.SwaggerEndpoint("/swagger/v1/swagger.json", "CMS API V1");
-                options.DocumentTitle = "CMS API";
+                app.UseSwagger();
+                //Enable middleware to serve swagger - ui assets(HTML, JS, CSS etc.)
+                app.UseSwaggerUI(options =>
+                {
+                    options.SwaggerEndpoint("/swagger/v1/swagger.json", "CMS API V1");
+                    options.DocumentTitle = "CMS API";
                 //在Swagger原页面基础上增加了request 头填写X-XSRF-TOKEN参数，解决Swagger Post方法不能调用的问题。
                 //注意Swagger\index.html文件必须设为嵌入资源。
-                options.IndexStream = () => GetType().GetTypeInfo().Assembly.GetManifestResourceStream("Cms.Web.Mvc.Swagger.index.html"); 
-            }); //URL: /swagger 
+                options.IndexStream = () => GetType().GetTypeInfo().Assembly.GetManifestResourceStream("Cms.Web.Mvc.Swagger.index.html");
+                }); //URL: /swagger 
+            }
 
 
 #if FEATURE_SIGNALR

@@ -27,6 +27,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Cms.Todo.Web\Cms.Todo.Web.csproj" />
     <ProjectReference Include="..\Cms.Web.Core\Cms.Web.Core.csproj" />
+    <ProjectReference Include="..\Cms.Todo.Web\Cms.Todo.Web.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.2">
