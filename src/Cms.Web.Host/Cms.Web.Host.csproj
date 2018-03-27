@@ -25,6 +25,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Cms.Todo.Web\Cms.Todo.Web.csproj" />
     <ProjectReference Include="..\Cms.Web.Core\Cms.Web.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
