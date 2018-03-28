@@ -14,6 +14,7 @@ using Abp.Extensions;
 using Cms.Authentication.JwtBearer;
 using Cms.Configuration;
 using Cms.Identity;
+using System.Reflection;
 
 #if FEATURE_SIGNALR
 using Microsoft.AspNet.SignalR;
@@ -32,10 +33,12 @@ namespace Cms.Web.Host.Startup
         private const string _defaultCorsPolicyName = "localhost";
 
         private readonly IConfigurationRoot _appConfiguration;
+        private readonly IHostingEnvironment env;
 
         public Startup(IHostingEnvironment env)
         {
             _appConfiguration = env.GetAppConfiguration();
+            this.env = env;
         }
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
@@ -52,7 +55,7 @@ namespace Cms.Web.Host.Startup
             services.AddSignalR();
 #endif
 
-            // Configure CORS for angular2 UI
+            // Configure CORS for React UI
             services.AddCors(
                 options => options.AddPolicy(
                     _defaultCorsPolicyName,
@@ -69,23 +72,26 @@ namespace Cms.Web.Host.Startup
                 )
             );
 
-            // Swagger - Enable this line and the related lines in Configure method to enable swagger UI
-            services.AddSwaggerGen(options =>
+            if (env.IsDevelopment())
             {
-                options.SwaggerDoc("v1", new Info { Title = "Cms API", Version = "v1" });
-                options.DocInclusionPredicate((docName, description) => true);
-
-                // Define the BearerAuth scheme that's in use
-                options.AddSecurityDefinition("bearerAuth", new ApiKeyScheme()
+                // Swagger - Enable this line and the related lines in Configure method to enable swagger UI
+                services.AddSwaggerGen(options =>
                 {
-                    Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
-                    Name = "Authorization",
-                    In = "header",
-                    Type = "apiKey"
+                    options.SwaggerDoc("v1", new Info { Title = "Cms API", Version = "v1" });
+                    options.DocInclusionPredicate((docName, description) => true);
+
+                    // Define the BearerAuth scheme that's in use
+                    options.AddSecurityDefinition("bearerAuth", new ApiKeyScheme()
+                    {
+                        Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                        Name = "Authorization",
+                        In = "header",
+                        Type = "apiKey"
+                    });
+                    // Assign scope requirements to operations based on AuthorizeAttribute
+                    options.OperationFilter<SecurityRequirementsOperationFilter>();
                 });
-                // Assign scope requirements to operations based on AuthorizeAttribute
-                options.OperationFilter<SecurityRequirementsOperationFilter>();
-            });
+            }
 
             // Configure Abp and Dependency Injection
             return services.AddAbp<CmsWebHostModule>(
@@ -129,15 +135,16 @@ namespace Cms.Web.Host.Startup
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            // Enable middleware to serve generated Swagger as a JSON endpoint
-            app.UseSwagger();
-            // Enable middleware to serve swagger-ui assets (HTML, JS, CSS etc.)
-            app.UseSwaggerUI(options =>
+            if (env.IsDevelopment())
             {
-                options.InjectOnCompleteJavaScript("/swagger/ui/abp.js");
-                options.InjectOnCompleteJavaScript("/swagger/ui/on-complete.js");
-                options.SwaggerEndpoint("/swagger/v1/swagger.json", "Cms API V1");
-            }); // URL: /swagger
+                app.UseSwagger();
+                //Enable middleware to serve swagger - ui assets(HTML, JS, CSS etc.)
+                app.UseSwaggerUI(options =>
+                {
+                    options.SwaggerEndpoint("/swagger/v1/swagger.json", "CMS API V1");
+                    options.DocumentTitle = "CMS API";
+                }); //URL: /swagger 
+            }
         }
 
 #if FEATURE_SIGNALR
