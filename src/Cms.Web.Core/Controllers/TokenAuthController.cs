@@ -212,12 +212,12 @@ namespace Cms.Controllers
         private static List<Claim> CreateJwtClaims(ClaimsIdentity identity)
         {
             var claims = identity.Claims.ToList();
-            var nameIdClaim = claims.First(c => c.Type == ClaimTypes.NameIdentifier);
+            //var nameIdClaim = claims.First(c => c.Type == ClaimTypes.NameIdentifier); //启用IdentityServer时，注释这行
 
             // Specifically add the jti (random nonce), iat (issued timestamp), and sub (subject/user) claims.
             claims.AddRange(new[]
             {
-                new Claim(JwtRegisteredClaimNames.Sub, nameIdClaim.Value),
+                //new Claim(JwtRegisteredClaimNames.Sub, nameIdClaim.Value),//启用IdentityServer时，注释这行
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.Iat, DateTimeOffset.Now.ToUnixTimeSeconds().ToString(), ClaimValueTypes.Integer64)
             });

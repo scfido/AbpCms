@@ -3,6 +3,7 @@ using Abp.Zero.EntityFrameworkCore;
 using Cms.Authorization.Roles;
 using Cms.Authorization.Users;
 using Cms.MultiTenancy;
+using Abp.IdentityServer4;
 
 namespace Cms.EntityFrameworkCore
 {
@@ -13,6 +14,15 @@ namespace Cms.EntityFrameworkCore
         public CmsDbContext(DbContextOptions<CmsDbContext> options)
             : base(options)
         {
+        }
+
+        public DbSet<PersistedGrantEntity> PersistedGrants { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.ConfigurePersistedGrantEntity();
         }
     }
 }

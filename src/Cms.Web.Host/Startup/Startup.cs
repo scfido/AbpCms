@@ -15,6 +15,11 @@ using Cms.Authentication.JwtBearer;
 using Cms.Configuration;
 using Cms.Identity;
 using System.Reflection;
+using System.Security.Cryptography.X509Certificates;
+using Abp.IdentityServer4;
+using Cms.Authorization.Users;
+using Cms.Web.Host.IdentityServer;
+using IdentityServer4.AccessTokenValidation;
 
 #if FEATURE_SIGNALR
 using Microsoft.AspNet.SignalR;
@@ -54,6 +59,24 @@ namespace Cms.Web.Host.Startup
 #if FEATURE_SIGNALR_ASPNETCORE
             services.AddSignalR();
 #endif
+            services.AddIdentityServer()
+                .AddSigningCredential(
+                    new X509Certificate2(_appConfiguration.GetValue<string>("IdentityServer:Certificate:File"),
+                    _appConfiguration.GetValue<string>("IdentityServer:Certificate:Password"))
+                    )
+                .AddInMemoryIdentityResources(IdentityServerConfig.GetIdentityResources())
+                .AddInMemoryApiResources(IdentityServerConfig.GetApiResources())
+                .AddInMemoryClients(IdentityServerConfig.GetClients())
+                .AddAbpPersistedGrants<IAbpPersistedGrantDbContext>()
+                .AddAbpIdentityServer<User>();
+
+            services.AddAuthentication("Bearer")
+                .AddIdentityServerAuthentication(options =>
+                {
+                    options.Authority = "http://localhost:5000";
+                    options.RequireHttpsMetadata = false;
+                    options.ApiName = "default-api";
+                });
 
             // Configure CORS for React UI
             services.AddCors(
@@ -108,10 +131,10 @@ namespace Cms.Web.Host.Startup
 
             app.UseCors(_defaultCorsPolicyName); // Enable CORS!
 
+            //app.UseJwtTokenMiddleware();
+            app.UseIdentityServer();
+
             app.UseStaticFiles();
-
-            app.UseAuthentication();
-
             app.UseAbpRequestLocalization();
 
 #if FEATURE_SIGNALR
