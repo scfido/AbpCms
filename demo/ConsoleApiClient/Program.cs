@@ -16,7 +16,7 @@ namespace Cms.ConsoleApiClient
         static void Main(string[] args)
         {
             RunDemoAsync().Wait();
-            //Console.ReadLine();
+            Console.ReadLine();
         }
 
         public static async Task RunDemoAsync()
@@ -31,7 +31,7 @@ namespace Cms.ConsoleApiClient
 
             var httpHandler = new HttpClientHandler();
 
-            //httpHandler.CookieContainer.Add(new Uri("http://localhost:5000/"), new Cookie(MultiTenancyConsts.TenantIdResolveKey, "1")); //Set TenantId
+            httpHandler.CookieContainer.Add(new Uri("http://localhost:5000/"), new Cookie(MultiTenancyConsts.TenantIdResolveKey, "1")); //Set TenantId
             var tokenClient = new TokenClient(disco.TokenEndpoint, "client", "secret", httpHandler);
             var tokenResponse = await tokenClient.RequestResourceOwnerPasswordAsync("admin", "123qwe", "default-api");
 
@@ -52,7 +52,7 @@ namespace Cms.ConsoleApiClient
             client.SetBearerToken(accessToken);
 
 
-            var response = await client.GetAsync("http://localhost.fiddler:5000/api/services/app/user/get?id=2");
+            var response = await client.GetAsync("http://localhost:5000/api/services/app/user/getall");
             if (!response.IsSuccessStatusCode)
             {
                 Console.WriteLine(response.StatusCode);

@@ -19,7 +19,7 @@ using System.Security.Cryptography.X509Certificates;
 using Abp.IdentityServer4;
 using Cms.Authorization.Users;
 using Cms.Web.Host.IdentityServer;
-using IdentityServer4.AccessTokenValidation;
+
 
 #if FEATURE_SIGNALR
 using Microsoft.AspNet.SignalR;
@@ -70,8 +70,8 @@ namespace Cms.Web.Host.Startup
                 .AddAbpPersistedGrants<IAbpPersistedGrantDbContext>()
                 .AddAbpIdentityServer<User>();
 
-            services.AddAuthentication("Bearer")
-                .AddIdentityServerAuthentication(options =>
+            services.AddAuthentication()
+                .AddIdentityServerAuthentication("IdentityBearer", options =>
                 {
                     options.Authority = "http://localhost:5000";
                     options.RequireHttpsMetadata = false;
@@ -131,8 +131,8 @@ namespace Cms.Web.Host.Startup
 
             app.UseCors(_defaultCorsPolicyName); // Enable CORS!
 
-            //app.UseJwtTokenMiddleware();
             app.UseIdentityServer();
+            app.UseJwtTokenMiddleware("IdentityBearer");
 
             app.UseStaticFiles();
             app.UseAbpRequestLocalization();
