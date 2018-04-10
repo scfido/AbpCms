@@ -19,6 +19,7 @@ namespace Cms.Web.Host.Startup
                 services.AddAuthentication(options => {
                     options.DefaultAuthenticateScheme = "JwtBearer";
                     options.DefaultChallengeScheme = "JwtBearer";
+                    
                 }).AddJwtBearer("JwtBearer", options =>
                 {
                     options.Audience = configuration["Authentication:JwtBearer:Audience"];

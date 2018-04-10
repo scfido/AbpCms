@@ -19,6 +19,7 @@ using System.Security.Cryptography.X509Certificates;
 using Abp.IdentityServer4;
 using Cms.Authorization.Users;
 using Cms.Web.Host.IdentityServer;
+using System.IO;
 
 
 #if FEATURE_SIGNALR
@@ -39,19 +40,31 @@ namespace Cms.Web.Host.Startup
 
         private readonly IConfigurationRoot _appConfiguration;
         private readonly IHostingEnvironment env;
+        private readonly string devProjectPath;
 
         public Startup(IHostingEnvironment env)
         {
             _appConfiguration = env.GetAppConfiguration();
             this.env = env;
+            var devProject = "Cms.Passport.Web";
+            devProjectPath = Path.GetFullPath(Path.Combine(env.ContentRootPath, $"..{Path.DirectorySeparatorChar}{devProject}"));
+            Console.WriteLine("当前开发项目路径：" + devProjectPath);
         }
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             // MVC
-            services.AddMvc(
+            var mvcBuilder = services.AddMvc(
                 options => options.Filters.Add(new CorsAuthorizationFilterFactory(_defaultCorsPolicyName))
             );
+
+            if (env.IsDevelopment())
+            {
+                //开发模式时，直接读取开发项目的View文件，产品模式则从dll的资源中读取。
+                mvcBuilder.AddRazorOptions(option => option.FileProviders.Add(
+                 new Microsoft.Extensions.FileProviders.PhysicalFileProvider(devProjectPath)
+                ));
+            }
 
             IdentityRegistrar.Register(services);
             AuthConfigurer.Configure(services, _appConfiguration);
@@ -59,21 +72,24 @@ namespace Cms.Web.Host.Startup
 #if FEATURE_SIGNALR_ASPNETCORE
             services.AddSignalR();
 #endif
-            services.AddIdentityServer()
-                .AddSigningCredential(
-                    new X509Certificate2(_appConfiguration.GetValue<string>("IdentityServer:Certificate:File"),
-                    _appConfiguration.GetValue<string>("IdentityServer:Certificate:Password"))
-                    )
-                .AddInMemoryIdentityResources(IdentityServerConfig.GetIdentityResources())
-                .AddInMemoryApiResources(IdentityServerConfig.GetApiResources())
-                .AddInMemoryClients(IdentityServerConfig.GetClients())
-                .AddAbpPersistedGrants<IAbpPersistedGrantDbContext>()
-                .AddAbpIdentityServer<User>();
+            services.AddIdentityServer(options=> {
+                options.UserInteraction.LoginUrl = "/passport/account/login";
+                options.UserInteraction.LogoutUrl = "/passport/account/logout";
+            })
+            .AddSigningCredential(
+                new X509Certificate2(_appConfiguration.GetValue<string>("IdentityServer:Certificate:File"),
+                _appConfiguration.GetValue<string>("IdentityServer:Certificate:Password"))
+                )
+            .AddInMemoryIdentityResources(IdentityServerConfig.GetIdentityResources())
+            .AddInMemoryApiResources(IdentityServerConfig.GetApiResources())
+            .AddInMemoryClients(IdentityServerConfig.GetClients())
+            .AddAbpPersistedGrants<IAbpPersistedGrantDbContext>()
+            .AddAbpIdentityServer<User>();
 
             services.AddAuthentication()
                 .AddIdentityServerAuthentication("IdentityBearer", options =>
                 {
-                    options.Authority = "http://localhost:5000";
+                    options.Authority = "http://localhost:5000/passport";
                     options.RequireHttpsMetadata = false;
                     options.ApiName = "default-api";
                 });
@@ -135,6 +151,16 @@ namespace Cms.Web.Host.Startup
             app.UseJwtTokenMiddleware("IdentityBearer");
 
             app.UseStaticFiles();
+            if (env.IsDevelopment())
+            {
+                //开发模式时，直接读取开发项目的js、css、image等静态文件，产品模式则从dll的资源中读取。
+                app.UseStaticFiles(new StaticFileOptions()
+                {
+                    FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider($"{ devProjectPath }{ Path.DirectorySeparatorChar }wwwroot"),
+                    RequestPath = "/passport"
+                });
+            }
+
             app.UseAbpRequestLocalization();
 
 #if FEATURE_SIGNALR

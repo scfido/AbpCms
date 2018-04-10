@@ -3,13 +3,13 @@ using Microsoft.Extensions.Configuration;
 using Abp.Modules;
 using Abp.Reflection.Extensions;
 using Cms.Configuration;
-using Cms.Todo.Web;
+using Cms.Passport.Web;
 
 namespace Cms.Web.Host.Startup
 {
     [DependsOn(
        typeof(CmsWebCoreModule),
-        typeof(TodoWebModule))]
+        typeof(CmsPassportWebModule))]
     public class CmsWebHostModule: AbpModule
     {
         private readonly IHostingEnvironment _env;

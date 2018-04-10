@@ -36,7 +36,8 @@ namespace Cms.Web.Startup
         {
             _appConfiguration = env.GetAppConfiguration();
             this.env = env;
-            devProjectPath = Path.GetFullPath(Path.Combine(env.ContentRootPath, $"..{Path.DirectorySeparatorChar}Cms.Todo.Web"));
+            var devProject = "Cms.Todo.Web";
+            devProjectPath = Path.GetFullPath(Path.Combine(env.ContentRootPath, $"..{Path.DirectorySeparatorChar}{devProject}"));
             Console.WriteLine("当前开发项目路径：" + devProjectPath);
         }
 
