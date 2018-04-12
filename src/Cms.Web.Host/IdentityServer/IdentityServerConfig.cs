@@ -1,4 +1,5 @@
-﻿using IdentityServer4.Models;
+﻿using IdentityServer4;
+using IdentityServer4.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,14 +34,36 @@ namespace Cms.Web.Host.IdentityServer
             {
                 new Client
                 {
-                    ClientId = "client",
+                    ClientId = "console",
                     AllowedGrantTypes = GrantTypes.ClientCredentials.Union(GrantTypes.ResourceOwnerPassword).ToList(),
                     AllowedScopes = {"default-api"},
                     ClientSecrets =
                     {
                         new Secret("secret".Sha256())
                     }
+                },
+                new Client
+                {
+                    ClientId = "mvc",
+                    AllowedGrantTypes = GrantTypes.ClientCredentials.Union(GrantTypes.Hybrid).ToList(),
+                    AllowedScopes =
+                    {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        IdentityServerConstants.StandardScopes.Email,
+                        "default-api"
+                    },
+                    
+                    ClientSecrets =
+                    {
+                        new Secret("secret".Sha256())
+                    },
+                    RedirectUris={"http://localhost:38372/signin-oidc","http://localhost:5002/signin-oidc" },
+                    PostLogoutRedirectUris={"http://localhost:38372" },
+                    FrontChannelLogoutUri="http://localhost:38372/signout-oidc" ,
+                    AllowOfflineAccess = true
                 }
+
             };
         }
     }

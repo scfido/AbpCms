@@ -72,9 +72,13 @@ namespace Cms.Web.Host.Startup
 #if FEATURE_SIGNALR_ASPNETCORE
             services.AddSignalR();
 #endif
-            services.AddIdentityServer(options=> {
+            services.AddIdentityServer(options =>
+            {
                 options.UserInteraction.LoginUrl = "/passport/account/login";
                 options.UserInteraction.LogoutUrl = "/passport/account/logout";
+                options.UserInteraction.ErrorUrl = "/passport/home/error";
+                options.UserInteraction.ConsentUrl = "/passport/consent";
+
             })
             .AddSigningCredential(
                 new X509Certificate2(_appConfiguration.GetValue<string>("IdentityServer:Certificate:File"),
@@ -87,9 +91,10 @@ namespace Cms.Web.Host.Startup
             .AddAbpIdentityServer<User>();
 
             services.AddAuthentication()
-                .AddIdentityServerAuthentication("IdentityBearer", options =>
-                {
-                    options.Authority = "http://localhost:5000/passport";
+                //这段代码是启用Host这个网站的Bearer认证
+                .AddIdentityServerAuthentication("Bearer", options => {
+                    //TODO:应该改为从配置文件获取，如果未设置就以本服务作为认证服务。
+                    options.Authority = "http://localhost:5000";    //认证服务的地址
                     options.RequireHttpsMetadata = false;
                     options.ApiName = "default-api";
                 });
@@ -147,8 +152,11 @@ namespace Cms.Web.Host.Startup
 
             app.UseCors(_defaultCorsPolicyName); // Enable CORS!
 
+            //启用认证
             app.UseIdentityServer();
-            app.UseJwtTokenMiddleware("IdentityBearer");
+
+            //没有这一行代码，不能通过apb的用户认证。
+            app.UseJwtTokenMiddleware("Bearer");
 
             app.UseStaticFiles();
             if (env.IsDevelopment())

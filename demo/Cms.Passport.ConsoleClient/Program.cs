@@ -32,7 +32,7 @@ namespace Cms.ConsoleApiClient
             var httpHandler = new HttpClientHandler();
 
             httpHandler.CookieContainer.Add(new Uri("http://localhost:5000/"), new Cookie(MultiTenancyConsts.TenantIdResolveKey, "1")); //Set TenantId
-            var tokenClient = new TokenClient(disco.TokenEndpoint, "client", "secret", httpHandler);
+            var tokenClient = new TokenClient(disco.TokenEndpoint, "console", "secret", httpHandler);
             var tokenResponse = await tokenClient.RequestResourceOwnerPasswordAsync("admin", "123qwe", "default-api");
 
             if (tokenResponse.IsError)
