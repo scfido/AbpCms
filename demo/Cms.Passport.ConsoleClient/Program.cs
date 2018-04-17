@@ -23,6 +23,7 @@ namespace Cms.ConsoleApiClient
         {
             var accessToken = await GetAccessTokenViaOwnerPasswordAsync();
             await GetUsersListAsync(accessToken);
+            await Logout(accessToken);
         }
 
         private static async Task<string> GetAccessTokenViaOwnerPasswordAsync()
@@ -75,6 +76,13 @@ namespace Cms.ConsoleApiClient
                 Console.WriteLine(user.ToJsonString(indented: true));
             }
         }
+
+
+        private static async Task Logout(string accessToken)
+        {
+            Console.WriteLine("注销还未实现");
+        }
+
     }
 
     internal class UserListDto

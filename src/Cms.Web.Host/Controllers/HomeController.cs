@@ -5,6 +5,7 @@ using Abp.Extensions;
 using Abp.Notifications;
 using Abp.Timing;
 using Cms.Controllers;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Cms.Web.Host.Controllers
 {
@@ -17,9 +18,11 @@ namespace Cms.Web.Host.Controllers
             _notificationPublisher = notificationPublisher;
         }
 
+        [Authorize]
         public IActionResult Index()
         {
-            return Redirect("/swagger");
+            return Content("<H3>OK</H3>");
+            //return Redirect("/swagger");
         }
 
         /// <summary>

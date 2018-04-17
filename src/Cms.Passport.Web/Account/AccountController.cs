@@ -120,7 +120,7 @@ namespace Cms.Passport.Web
                     };
 
                     // issue authentication cookie with subject ID and username
-                    //await HttpContext.SignInAsync(user.Id.ToString(), user.Name, props);
+                    await HttpContext.SignInAsync("idsvr",user.Id.ToString(), user.Name, props);
 
                     // make sure the returnUrl is still valid, and if so redirect back to authorize endpoint or a local page
                     // the IsLocalUrl check is only necessary if you want to support additional local pages, otherwise IsValidReturnUrl is more strict

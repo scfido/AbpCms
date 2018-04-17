@@ -29,7 +29,10 @@ namespace Cms.Passport.MvcClient
             services.AddMvc();
             services.AddAuthentication(options =>
             {
+                //使用Cookie认证来保存access_token
                 options.DefaultScheme = "Cookies";
+                //当未认证时，使用oidc执行Challenge，即跳转到passport网站。
+                //如果不设置，就使用Cookies执行Challenge，即跳转到/account/login登陆
                 options.DefaultChallengeScheme = "oidc";
             })
             .AddCookie("Cookies", options =>
@@ -76,7 +79,6 @@ namespace Cms.Passport.MvcClient
 
             app.UseStaticFiles();
             app.UseAuthentication();
-
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

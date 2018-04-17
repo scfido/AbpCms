@@ -20,6 +20,7 @@ using Abp.IdentityServer4;
 using Cms.Authorization.Users;
 using Cms.Web.Host.IdentityServer;
 using System.IO;
+using Microsoft.AspNetCore.Authentication;
 
 
 #if FEATURE_SIGNALR
@@ -72,6 +73,11 @@ namespace Cms.Web.Host.Startup
 #if FEATURE_SIGNALR_ASPNETCORE
             services.AddSignalR();
 #endif
+
+            // 这段代码作用是添加IdentityServer服务，和Cms网站的认证是无关的。但是
+            // AddIdentityServer()会自动添加名为"idsrv"的认证，用于IdentityServer服务
+            // 自身的认证，他的方式Cookies认证类似，默认跳转到/account/login登陆，下
+            // 面指定了地址为"/passport/account/login"。
             services.AddIdentityServer(options =>
             {
                 options.UserInteraction.LoginUrl = "/passport/account/login";
@@ -90,14 +96,19 @@ namespace Cms.Web.Host.Startup
             .AddAbpPersistedGrants<IAbpPersistedGrantDbContext>()
             .AddAbpIdentityServer<User>();
 
+            // 这段代码是启用Host这个网站的Bearer认证，因Host与IdentityServer合并
+            // 在同一网站，所以Host的Mvc页面已经具备Cookie认证，就不需要添再添加
+            // Cookie认证了。IdentityServer要从Host网站剥离出，就需要添加Cookie认
+            // 证来保护Mvc页面。客户端程序调用WebApi不会附带Cookie，这里添加了“Bearer”
+            // 就是用来认证WebApi的。
             services.AddAuthentication()
-                //这段代码是启用Host这个网站的Bearer认证
-                .AddIdentityServerAuthentication("Bearer", options => {
-                    //TODO:应该改为从配置文件获取，如果未设置就以本服务作为认证服务。
-                    options.Authority = "http://localhost:5000";    //认证服务的地址
-                    options.RequireHttpsMetadata = false;
-                    options.ApiName = "default-api";
-                });
+                .AddIdentityServerAuthentication("Bearer", options =>
+                 {
+                     //TODO:应该改为从配置文件获取，如果未设置就以本服务作为认证服务。
+                     options.Authority = "http://localhost:5000";    //认证服务的地址
+                     options.RequireHttpsMetadata = false;
+                     options.ApiName = "default-api";
+                 });
 
             // Configure CORS for React UI
             services.AddCors(
@@ -151,13 +162,20 @@ namespace Cms.Web.Host.Startup
             app.UseAbp(options => { options.UseAbpRequestLocalization = false; }); // Initializes ABP framework.
 
             app.UseCors(_defaultCorsPolicyName); // Enable CORS!
+            app.Use(async (ctx, next) => {
+
+                var result = await ctx.AuthenticateAsync();
+                var userManager = Abp.Dependency.IocManager.Instance.Resolve<UserManager>();
+                var user = await userManager.GetUserAsync(result.Principal);
+            });
+
+
+            // 这个中间件把"Bearer"认证的中Jwt附带的用户信息写入Context，
+            // 使得不带Cookie的客户端程序使用JwtToken也能访问WebApi。
+            app.UseJwtTokenMiddleware("Bearer");
 
             //启用认证
             app.UseIdentityServer();
-
-            //没有这一行代码，不能通过apb的用户认证。
-            app.UseJwtTokenMiddleware("Bearer");
-
             app.UseStaticFiles();
             if (env.IsDevelopment())
             {
