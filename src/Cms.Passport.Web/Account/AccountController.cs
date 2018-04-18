@@ -21,6 +21,9 @@ using IdentityServer4.Models;
 using Abp.AspNetCore.Mvc.Controllers;
 using Cms.Authorization.Users;
 using Cms.Identity;
+using Cms.Authorization;
+using Abp.Authorization;
+using Abp.Domain.Uow;
 
 namespace Cms.Passport.Web
 {
@@ -34,6 +37,7 @@ namespace Cms.Passport.Web
     public class AccountController : AbpController
     {
         private readonly UserManager userManager;
+        private readonly LogInManager logInManager;
         private readonly SignInManager signInManager;
         private readonly IIdentityServerInteractionService _interaction;
         private readonly IClientStore _clientStore;
@@ -47,6 +51,7 @@ namespace Cms.Passport.Web
             IEventService events,
             UserManager userManager,
             SignInManager signInManager,
+            LogInManager logInManager,
             TestUserStore users = null)
         {
             _interaction = interaction;
@@ -55,6 +60,7 @@ namespace Cms.Passport.Web
             _events = events;
             this.userManager = userManager;
             this.signInManager = signInManager;
+            this.logInManager = logInManager;
         }
 
         /// <summary>
@@ -73,6 +79,7 @@ namespace Cms.Passport.Web
         /// Handle postback from username/password login
         /// </summary>
         [HttpPost]
+        [UnitOfWork]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginInputModel model, string button)
         {
@@ -99,13 +106,12 @@ namespace Cms.Passport.Web
 
             if (ModelState.IsValid)
             {
-                // validate username/password against in-memory store
-                var result = await signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberLogin, lockoutOnFailure: false);
-                //var user = await userManager.FindByNameAsync(model.Username);
-                if (result.Succeeded)
+                var result = await logInManager.LoginAsync(model.Username, model.Password, "1");
+                if (result.Result == AbpLoginResultType.Success)
                 {
-                    var user = await userManager.FindByNameAsync(model.Username);
-                    await _events.RaiseAsync(new UserLoginSuccessEvent(user.Name, user.Id.ToString(), user.Name));
+                    
+                    var user = result.User;
+                    await _events.RaiseAsync(new UserLoginSuccessEvent(user.Name, user.Id.ToString(), result.Tenant.Name));
 
                     // only set explicit expiration here if user chooses "remember me". 
                     // otherwise we rely upon expiration configured in cookie middleware.
@@ -119,8 +125,8 @@ namespace Cms.Passport.Web
                         };
                     };
 
-                    // issue authentication cookie with subject ID and username
-                    await HttpContext.SignInAsync("idsvr",user.Id.ToString(), user.Name, props);
+                    await signInManager.SignInAsync(user, props);
+                    await UnitOfWorkManager.Current.SaveChangesAsync();
 
                     // make sure the returnUrl is still valid, and if so redirect back to authorize endpoint or a local page
                     // the IsLocalUrl check is only necessary if you want to support additional local pages, otherwise IsValidReturnUrl is more strict
@@ -131,8 +137,8 @@ namespace Cms.Passport.Web
 
                     return Redirect("~/");
                 }
-
-                await _events.RaiseAsync(new UserLoginFailureEvent(model.Username, "invalid credentials"));
+                
+                await _events.RaiseAsync(new UserLoginFailureEvent(model.Username, result.Result.ToString()));
 
                 ModelState.AddModelError("", AccountOptions.InvalidCredentialsErrorMessage);
             }
@@ -175,7 +181,8 @@ namespace Cms.Passport.Web
             if (User?.Identity.IsAuthenticated == true)
             {
                 // delete local authentication cookie
-                await HttpContext.SignOutAsync();
+                await signInManager.SignOutAsync();
+
 
                 // raise the logout event
                 await _events.RaiseAsync(new UserLogoutSuccessEvent(User.GetSubjectId(), User.GetDisplayName()));

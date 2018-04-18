@@ -102,6 +102,7 @@ namespace Cms.Web.Host.Startup
             // 证来保护Mvc页面。客户端程序调用WebApi不会附带Cookie，这里添加了“Bearer”
             // 就是用来认证WebApi的。
             services.AddAuthentication()
+                .AddCookie()
                 .AddIdentityServerAuthentication("Bearer", options =>
                  {
                      //TODO:应该改为从配置文件获取，如果未设置就以本服务作为认证服务。
@@ -162,12 +163,12 @@ namespace Cms.Web.Host.Startup
             app.UseAbp(options => { options.UseAbpRequestLocalization = false; }); // Initializes ABP framework.
 
             app.UseCors(_defaultCorsPolicyName); // Enable CORS!
-            app.Use(async (ctx, next) => {
+            //app.Use(async (ctx, next) => {
 
-                var result = await ctx.AuthenticateAsync();
-                var userManager = Abp.Dependency.IocManager.Instance.Resolve<UserManager>();
-                var user = await userManager.GetUserAsync(result.Principal);
-            });
+            //    var result = await ctx.AuthenticateAsync();
+            //    var userManager = Abp.Dependency.IocManager.Instance.Resolve<UserManager>();
+            //    var user = await userManager.GetUserAsync(result.Principal);
+            //});
 
 
             // 这个中间件把"Bearer"认证的中Jwt附带的用户信息写入Context，
@@ -177,6 +178,7 @@ namespace Cms.Web.Host.Startup
             //启用认证
             app.UseIdentityServer();
             app.UseStaticFiles();
+            app.UseExceptionHandler();
             if (env.IsDevelopment())
             {
                 //开发模式时，直接读取开发项目的js、css、image等静态文件，产品模式则从dll的资源中读取。

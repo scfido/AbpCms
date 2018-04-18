@@ -37,7 +37,7 @@
     <ProjectReference Include="..\Cms.Todo.Web\Cms.Todo.Web.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="IdentityServer4.AccessTokenValidation" Version="2.4.0" />
+    <PackageReference Include="IdentityServer4.AccessTokenValidation" Version="2.6.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.3">
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
@@ -51,7 +51,7 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="2.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.0.3" />
     <PackageReference Include="Abp.Castle.Log4Net" Version="3.5.0" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="2.3.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="2.4.0" />
   </ItemGroup>
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="2.0.0" />

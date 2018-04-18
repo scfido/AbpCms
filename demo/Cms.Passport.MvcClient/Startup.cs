@@ -45,10 +45,10 @@ namespace Cms.Passport.MvcClient
                 options.Authority = "http://localhost:5000";
                 options.RequireHttpsMetadata = false;
                 options.ClientId = "mvc";
-                options.ClientSecret = "secret";
+                options.ClientSecret = "secre1t";
                 options.ResponseType = "id_token code";
                 options.Scope.Clear();
-                options.Scope.Add("default-api");
+                options.Scope.Add("default-api1");
                 options.Scope.Add("openid");
                 options.Scope.Add("profile");
 //                options.Scope.Add("email");
