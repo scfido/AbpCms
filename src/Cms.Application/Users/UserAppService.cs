@@ -18,6 +18,7 @@ using Cms.Users.Dto;
 
 namespace Cms.Users
 {
+    //[AbpAuthorize(PermissionNames.Pages_Users)]
     [AbpAuthorize(PermissionNames.Pages_Users)]
     public class UserAppService : AsyncCrudAppService<User, UserDto, long, PagedResultRequestDto, CreateUserDto, UserDto>, IUserAppService
     {

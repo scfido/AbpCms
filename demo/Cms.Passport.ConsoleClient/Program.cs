@@ -15,6 +15,9 @@ namespace Cms.ConsoleApiClient
     {
         static void Main(string[] args)
         {
+            Console.Title = "Console Client";
+            Console.WriteLine("这是一个使用Identity Server授权的控制台程序");
+
             RunDemoAsync().Wait();
             Console.ReadLine();
         }
@@ -34,15 +37,21 @@ namespace Cms.ConsoleApiClient
 
             httpHandler.CookieContainer.Add(new Uri("http://localhost:5000/"), new Cookie(MultiTenancyConsts.TenantIdResolveKey, "1")); //Set TenantId
             var tokenClient = new TokenClient(disco.TokenEndpoint, "console", "secret", httpHandler);
-            var tokenResponse = await tokenClient.RequestResourceOwnerPasswordAsync("admin", "123qwe", "default-api");
+            var tokenResponse = await tokenClient.RequestResourceOwnerPasswordAsync("admin", "123qwe");
 
             if (tokenResponse.IsError)
             {
                 Console.WriteLine("Error: ");
                 Console.WriteLine(tokenResponse.Error);
+                
             }
-
             Console.WriteLine(tokenResponse.Json);
+
+            //获取当前用户信息
+            var userInfoClient = new UserInfoClient(disco.UserInfoEndpoint);
+            var response = await userInfoClient.GetAsync(tokenResponse.AccessToken);
+            var claims = response.Claims;
+            Console.WriteLine(response.Json);
 
             return tokenResponse.AccessToken;
         }

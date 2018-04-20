@@ -8,14 +8,14 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace Cms.Passport.MvcClient
+namespace Cms.Passport.WebApi
 {
     public class Program
     {
         public static void Main(string[] args)
         {
-            Console.Title = "Mvc Client";
-            Console.WriteLine("这是一个使用Identity Server授权的Mvc网站");
+            Console.Title = "Api Server";
+            Console.WriteLine("这是一个使用Identity Server授权的Web Api服务");
             BuildWebHost(args).Run();
         }
 

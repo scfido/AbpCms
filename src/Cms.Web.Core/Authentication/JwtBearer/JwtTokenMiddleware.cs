@@ -11,6 +11,7 @@ namespace Cms.Authentication.JwtBearer
             return UseJwtTokenMiddleware(app, JwtBearerDefaults.AuthenticationScheme);
         }
 
+
         public static IApplicationBuilder UseJwtTokenMiddleware(this IApplicationBuilder app, string authenticationScheme)
         {
             return app.Use(async (ctx, next) =>

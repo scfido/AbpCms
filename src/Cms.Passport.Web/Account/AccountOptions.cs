@@ -10,10 +10,17 @@ namespace Cms.Passport.Web
     {
         public static bool AllowLocalLogin = true;
         public static bool AllowRememberLogin = true;
+
+        /// <summary>
+        /// 登陆信息记住时长
+        /// </summary>
         public static TimeSpan RememberMeLoginDuration = TimeSpan.FromDays(30);
 
-        public static bool ShowLogoutPrompt = true;
-        public static bool AutomaticRedirectAfterSignOut = false;
+        /// <summary>
+        /// 登出时经过注销提示页面
+        /// </summary>
+        public static bool ShowLogoutPrompt = false;
+        public static bool AutomaticRedirectAfterSignOut = true;
 
         // specify the Windows authentication scheme being used
         public static readonly string WindowsAuthenticationSchemeName = Microsoft.AspNetCore.Server.IISIntegration.IISDefaults.AuthenticationScheme;

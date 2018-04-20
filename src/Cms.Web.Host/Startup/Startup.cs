@@ -84,7 +84,6 @@ namespace Cms.Web.Host.Startup
                 options.UserInteraction.LogoutUrl = "/passport/account/logout";
                 options.UserInteraction.ErrorUrl = "/passport/home/error";
                 options.UserInteraction.ConsentUrl = "/passport/consent";
-
             })
             .AddSigningCredential(
                 new X509Certificate2(_appConfiguration.GetValue<string>("IdentityServer:Certificate:File"),
@@ -94,7 +93,8 @@ namespace Cms.Web.Host.Startup
             .AddInMemoryApiResources(IdentityServerConfig.GetApiResources())
             .AddInMemoryClients(IdentityServerConfig.GetClients())
             .AddAbpPersistedGrants<IAbpPersistedGrantDbContext>()
-            .AddAbpIdentityServer<User>();
+            .AddAbpIdentityServer<User>()
+            .AddRedirectUriValidator<AnyRedirectUriValidator>();
 
             // 这段代码是启用Host这个网站的Bearer认证，因Host与IdentityServer合并
             // 在同一网站，所以Host的Mvc页面已经具备Cookie认证，就不需要添再添加
@@ -160,10 +160,18 @@ namespace Cms.Web.Host.Startup
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            app.UseAbp(options => { options.UseAbpRequestLocalization = false; }); // Initializes ABP framework.
+            // Initializes ABP framework.
+            app.UseAbp(options => {
+                options.UseAbpRequestLocalization = false;
+                // SecurityHeaders会在Http headers中添加“X-Frame-Options: SAMEORIGIN”
+                // 导致Js客户端不能在iframe中调用connect/checksession，所有设置为false
+                options.UseSecurityHeaders = false;     
+            }); 
+
+            app.UseExceptionHandler("/error");
 
             app.UseCors(_defaultCorsPolicyName); // Enable CORS!
-            //app.Use(async (ctx, next) => {
+                                                 //app.Use(async (ctx, next) => {
 
             //    var result = await ctx.AuthenticateAsync();
             //    var userManager = Abp.Dependency.IocManager.Instance.Resolve<UserManager>();
@@ -178,7 +186,6 @@ namespace Cms.Web.Host.Startup
             //启用认证
             app.UseIdentityServer();
             app.UseStaticFiles();
-            app.UseExceptionHandler();
             if (env.IsDevelopment())
             {
                 //开发模式时，直接读取开发项目的js、css、image等静态文件，产品模式则从dll的资源中读取。

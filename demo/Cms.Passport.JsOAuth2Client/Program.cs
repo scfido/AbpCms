@@ -8,14 +8,14 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace Cms.Passport.MvcClient
+namespace Cms.Passport.JsOAuth2Client
 {
     public class Program
     {
         public static void Main(string[] args)
         {
-            Console.Title = "Mvc Client";
-            Console.WriteLine("这是一个使用Identity Server授权的Mvc网站");
+            Console.Title = "Js OAuth2 Client";
+            Console.WriteLine("这是一个使用Identity Server OAuth2授权的Html客户端");
             BuildWebHost(args).Run();
         }
 

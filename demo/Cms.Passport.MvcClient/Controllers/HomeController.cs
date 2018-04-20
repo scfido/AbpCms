@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Cms.Passport.MvcClient.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication;
+using System.Net.Http;
+using System.Net.Http.Headers;
 
 namespace Cms.Passport.MvcClient.Controllers
 {
@@ -25,9 +27,17 @@ namespace Cms.Passport.MvcClient.Controllers
             return View();
         }
 
-        public IActionResult Contact()
+        [Authorize]
+        public async Task<IActionResult> Api()
         {
-            ViewData["Message"] = "Your contact page.";
+            ViewData["Message"] = "调用API Server返回值";
+            var token = await HttpContext.GetTokenAsync("access_token");
+            using (var client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                client.BaseAddress = new Uri("http://localhost:5001");
+                ViewData["ApiResult"] = await client.GetStringAsync("/api/values");
+            }
 
             return View();
         }

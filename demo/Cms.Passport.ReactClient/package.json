@@ -1,0 +1,14 @@
+{
+  "name": "reactclient",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "oidc-client": "^1.4.1"
+  },
+  "scripts": {
+    "start": "cross-env PORT=3000 BROWSER=none umi dev"
+  },
+  "devDependencies": {
+    "cross-env": "^5.1.4"
+  }
+}
