@@ -35,7 +35,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cms.Passport.Web", "src\Cms
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cms.Passport.ConsoleClient", "demo\Cms.Passport.ConsoleClient\Cms.Passport.ConsoleClient.csproj", "{7BDF31CD-857C-40F7-B1A0-1E480F557B23}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cms.Passport.MvcClient", "demo\Cms.Passport.MvcClient\Cms.Passport.MvcClient.csproj", "{E8EAE37F-2432-4611-A52C-A1C6E7999ABD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cms.Passport.MvcClient", "demo\Cms.Passport.MvcClient\Cms.Passport.MvcClient.csproj", "{E8EAE37F-2432-4611-A52C-A1C6E7999ABD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cms.Passport.ApiServer", "demo\Cms.Passport.ApiServer\Cms.Passport.ApiServer.csproj", "{335023FB-2471-4FC5-AE39-F5DB69CCE07A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cms.Passport.JsOAuth2Client", "demo\Cms.Passport.JsOAuth2Client\Cms.Passport.JsOAuth2Client.csproj", "{64E50EC2-6991-4C40-A36B-D16AC92AF210}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -99,6 +103,14 @@ Global
 		{E8EAE37F-2432-4611-A52C-A1C6E7999ABD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E8EAE37F-2432-4611-A52C-A1C6E7999ABD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E8EAE37F-2432-4611-A52C-A1C6E7999ABD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{335023FB-2471-4FC5-AE39-F5DB69CCE07A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{335023FB-2471-4FC5-AE39-F5DB69CCE07A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{335023FB-2471-4FC5-AE39-F5DB69CCE07A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{335023FB-2471-4FC5-AE39-F5DB69CCE07A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{64E50EC2-6991-4C40-A36B-D16AC92AF210}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64E50EC2-6991-4C40-A36B-D16AC92AF210}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64E50EC2-6991-4C40-A36B-D16AC92AF210}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64E50EC2-6991-4C40-A36B-D16AC92AF210}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -118,6 +130,8 @@ Global
 		{3777AB0E-4A12-4573-AB76-70715C8D796B} = {AFAA0841-BD93-466F-B8F4-FB4EEC86F1FC}
 		{7BDF31CD-857C-40F7-B1A0-1E480F557B23} = {05EC3E84-7CB6-4944-84D6-FD35FC574E32}
 		{E8EAE37F-2432-4611-A52C-A1C6E7999ABD} = {05EC3E84-7CB6-4944-84D6-FD35FC574E32}
+		{335023FB-2471-4FC5-AE39-F5DB69CCE07A} = {05EC3E84-7CB6-4944-84D6-FD35FC574E32}
+		{64E50EC2-6991-4C40-A36B-D16AC92AF210} = {05EC3E84-7CB6-4944-84D6-FD35FC574E32}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EA244488-98E9-47F3-8681-4FD65D089EDD}
