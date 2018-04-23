@@ -18,9 +18,12 @@ using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using Abp.IdentityServer4;
 using Cms.Authorization.Users;
-using Cms.Web.Host.IdentityServer;
 using System.IO;
 using Microsoft.AspNetCore.Authentication;
+using Abp.PlugIns;
+using Cms.Passport.Web;
+using Microsoft.Extensions.FileProviders;
+using Cms.Web.Core;
 
 
 #if FEATURE_SIGNALR
@@ -41,15 +44,31 @@ namespace Cms.Web.Host.Startup
 
         private readonly IConfigurationRoot _appConfiguration;
         private readonly IHostingEnvironment env;
-        private readonly string devProjectPath;
+        private readonly DeveloperProjectInfo[] devProjects;
 
         public Startup(IHostingEnvironment env)
         {
             _appConfiguration = env.GetAppConfiguration();
             this.env = env;
-            var devProject = "Cms.Passport.Web";
-            devProjectPath = Path.GetFullPath(Path.Combine(env.ContentRootPath, $"..{Path.DirectorySeparatorChar}{devProject}"));
-            Console.WriteLine("当前开发项目路径：" + devProjectPath);
+            devProjects = new DeveloperProjectInfo[]
+            {
+                new DeveloperProjectInfo
+                {
+                    Path = GetProjectPath("Cms.Passport.Web"),
+                    RequstPath="/passport",
+                    StaticFilePath="wwwroot"
+                },
+                new DeveloperProjectInfo
+                {
+                    Path = GetProjectPath("Cms.Todo.Web"),
+                    RequstPath="/todo"
+                }
+            };
+        }
+
+        private string GetProjectPath(string floder)
+        {
+            return Path.GetFullPath(Path.Combine(env.ContentRootPath, $"..{Path.DirectorySeparatorChar}{floder}"));
         }
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
@@ -57,15 +76,8 @@ namespace Cms.Web.Host.Startup
             // MVC
             var mvcBuilder = services.AddMvc(
                 options => options.Filters.Add(new CorsAuthorizationFilterFactory(_defaultCorsPolicyName))
-            );
-
-            if (env.IsDevelopment())
-            {
-                //开发模式时，直接读取开发项目的View文件，产品模式则从dll的资源中读取。
-                mvcBuilder.AddRazorOptions(option => option.FileProviders.Add(
-                 new Microsoft.Extensions.FileProviders.PhysicalFileProvider(devProjectPath)
-                ));
-            }
+            )
+            .AddDeveloperView(devProjects, env);
 
             IdentityRegistrar.Register(services);
             AuthConfigurer.Configure(services, _appConfiguration);
@@ -150,34 +162,34 @@ namespace Cms.Web.Host.Startup
             }
 
             // Configure Abp and Dependency Injection
+
+            //设置app_module目录下的Abp Module动态加载。
             return services.AddAbp<CmsWebHostModule>(
                 // Configure Log4Net logging
-                options => options.IocManager.IocContainer.AddFacility<LoggingFacility>(
-                    f => f.UseAbpLog4Net().WithConfig("log4net.config")
-                )
+                options =>
+                {
+                    options.IocManager.IocContainer.AddFacility<LoggingFacility>(f => f.UseAbpLog4Net().WithConfig("log4net.config"));
+                    var plugPath = GetAppModulePath();
+                    if(plugPath != null)
+                        options.PlugInSources.AddFolder(plugPath, SearchOption.TopDirectoryOnly);
+                }
             );
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             // Initializes ABP framework.
-            app.UseAbp(options => {
+            app.UseAbp(options =>
+            {
                 options.UseAbpRequestLocalization = false;
                 // SecurityHeaders会在Http headers中添加“X-Frame-Options: SAMEORIGIN”
                 // 导致Js客户端不能在iframe中调用connect/checksession，所有设置为false
-                options.UseSecurityHeaders = false;     
-            }); 
+                options.UseSecurityHeaders = false;
+            });
 
             app.UseExceptionHandler("/error");
 
             app.UseCors(_defaultCorsPolicyName); // Enable CORS!
-                                                 //app.Use(async (ctx, next) => {
-
-            //    var result = await ctx.AuthenticateAsync();
-            //    var userManager = Abp.Dependency.IocManager.Instance.Resolve<UserManager>();
-            //    var user = await userManager.GetUserAsync(result.Principal);
-            //});
-
 
             // 这个中间件把"Bearer"认证的中Jwt附带的用户信息写入Context，
             // 使得不带Cookie的客户端程序使用JwtToken也能访问WebApi。
@@ -186,15 +198,7 @@ namespace Cms.Web.Host.Startup
             //启用认证
             app.UseIdentityServer();
             app.UseStaticFiles();
-            if (env.IsDevelopment())
-            {
-                //开发模式时，直接读取开发项目的js、css、image等静态文件，产品模式则从dll的资源中读取。
-                app.UseStaticFiles(new StaticFileOptions()
-                {
-                    FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider($"{ devProjectPath }{ Path.DirectorySeparatorChar }wwwroot"),
-                    RequestPath = "/passport"
-                });
-            }
+            app.UseDeveloperStaticFiles(devProjects, env);
 
             app.UseAbpRequestLocalization();
 
@@ -229,6 +233,16 @@ namespace Cms.Web.Host.Startup
                     options.DocumentTitle = "CMS API";
                 }); //URL: /swagger 
             }
+        }
+
+        private string GetAppModulePath()
+        {
+            var entryPath = Assembly.GetEntryAssembly().Location;
+            var modulePath = $"{Path.GetDirectoryName(entryPath)}{Path.DirectorySeparatorChar}app_module";
+            if (Directory.Exists(modulePath))
+                return modulePath;
+
+            return null;
         }
 
 #if FEATURE_SIGNALR

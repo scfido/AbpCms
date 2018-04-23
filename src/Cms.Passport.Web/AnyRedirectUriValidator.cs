@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Cms.Web.Host.IdentityServer
+namespace Cms.Passport.Web
 {
     /// <summary>
     /// 支持“*”的回调地址验证器。不想限制客户端回调地址时设置RedirectUris = { "*" }。
