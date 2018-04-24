@@ -34,6 +34,13 @@ namespace Cms.Todo.Web
                         "Cms.Todo.Web.Areas.Todo.Views"
                     )
                 );
+                Configuration.EmbeddedResources.Sources.Add(
+                    new EmbeddedResourceSet(
+                        "/todo/",
+                        Assembly.GetExecutingAssembly(),
+                        "Cms.Todo.Web.wwwroot"
+                    )
+               );
             }
 
             //Configure navigation/menu

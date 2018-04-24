@@ -4,16 +4,11 @@
     ViewData["Title"] = "Todo";
 }
 @section scripts
-{
-    <environment names="Development">
-        <script src="~/Areas/Todo/Views/Home/Index.js" asp-append-version="true"></script>
-    </environment>
-
-    <environment names="Staging,Production">
-        <script src="~/Areas/Todo/Views/Home/Index.min.js" asp-append-version="true"></script>
-    </environment>
+    {
+    <script src="~/todo/home/index.js" asp-append-version="true"></script>
 }
 
+<img src="~/todo/user.png" />
 <h2>Home in area</h2>
 <div id="status">Index.js运行异常</div>
 

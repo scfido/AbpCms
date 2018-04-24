@@ -2,7 +2,7 @@
 
 <div class="login-page">
     <div class="page-header">
-        <h1>Login</h1>
+        <h1>登陆</h1>
     </div>
 
     @Html.Partial("_ValidationSummary")
@@ -14,7 +14,7 @@
             <div class="col-sm-6">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Local Login</h3>
+                        <h3 class="panel-title">本地登陆</h3>
                     </div>
                     <div class="panel-body">
 
@@ -24,24 +24,24 @@
                             <fieldset>
                                 <div class="form-group">
                                     <label asp-for="Username"></label>
-                                    <input class="form-control" placeholder="Username" asp-for="Username" autofocus>
+                                    <input class="form-control" placeholder="用户名" asp-for="Username" autofocus>
                                 </div>
                                 <div class="form-group">
                                     <label asp-for="Password"></label>
-                                    <input type="password" class="form-control" placeholder="Password" asp-for="Password" autocomplete="off">
+                                    <input type="password" class="form-control" placeholder="密码" asp-for="Password" autocomplete="off">
                                 </div>
                                 @if (Model.AllowRememberLogin)
                                 {
                                     <div class="form-group login-remember">
                                         <label asp-for="RememberLogin">
                                             <input asp-for="RememberLogin">
-                                            <strong>Remember My Login</strong>
+                                            <strong>记住登陆</strong>
                                         </label>
                                     </div>
                                 }
                                 <div class="form-group">
-                                    <button class="btn btn-primary" name="button" value="login">Login</button>
-                                    <button class="btn btn-default" name="button" value="cancel">Cancel</button>
+                                    <button class="btn btn-primary" name="button" value="login">登陆</button>
+                                    <button class="btn btn-default" name="button" value="cancel">取消</button>
                                 </div>
                             </fieldset>
                         </form>

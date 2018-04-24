@@ -11,6 +11,12 @@
 
   <ItemGroup>
     <EmbeddedResource Include="Areas\Todo\Views\**\*.*" />
+    <EmbeddedResource Include="wwwroot\**\*.*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="wwwroot\**" />
+    <None Remove="wwwroot\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -21,5 +27,9 @@
   <ItemGroup>
     <ProjectReference Include="..\Cms.Todo\Cms.Todo.csproj" />
   </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="copy /Y &quot;$(TargetDir)$(TargetFileName)&quot; &quot;$(SolutionDir)src\Cms.Web.Host\$(OutDir)app_modules\$(TargetFileName)&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)$(TargetName).pdb&quot; &quot;$(SolutionDir)src\Cms.Web.Host\$(OutDir)app_modules\$(TargetName).pdb&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)Cms.Todo.dll&quot; &quot;$(SolutionDir)src\Cms.Web.Host\$(OutDir)app_modules\Cms.Todo.dll&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)Cms.Todo.pdb&quot; &quot;$(SolutionDir)src\Cms.Web.Host\$(OutDir)app_modules\Cms.Todo.pdb&quot;" />
+  </Target>
   
 </Project>

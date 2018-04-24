@@ -11,7 +11,6 @@ using Swashbuckle.AspNetCore.Swagger;
 using Abp.AspNetCore;
 using Abp.Castle.Logging.Log4Net;
 using Abp.Extensions;
-using Cms.Authentication.JwtBearer;
 using Cms.Configuration;
 using Cms.Identity;
 using System.Reflection;
@@ -19,11 +18,9 @@ using System.Security.Cryptography.X509Certificates;
 using Abp.IdentityServer4;
 using Cms.Authorization.Users;
 using System.IO;
-using Microsoft.AspNetCore.Authentication;
 using Abp.PlugIns;
-using Cms.Passport.Web;
-using Microsoft.Extensions.FileProviders;
 using Cms.Web.Core;
+using Cms.Passport.Web;
 
 
 #if FEATURE_SIGNALR
@@ -54,14 +51,17 @@ namespace Cms.Web.Host.Startup
             {
                 new DeveloperProjectInfo
                 {
+                    AbpModule = typeof(CmsPassportWebModule),
                     Path = GetProjectPath("Cms.Passport.Web"),
                     RequstPath="/passport",
                     StaticFilePath="wwwroot"
                 },
                 new DeveloperProjectInfo
                 {
+                    AbpModule = typeof(Todo.Web.TodoWebModule),
                     Path = GetProjectPath("Cms.Todo.Web"),
-                    RequstPath="/todo"
+                    RequstPath="/todo",
+                    StaticFilePath="wwwroot"
                 }
             };
         }
@@ -86,10 +86,8 @@ namespace Cms.Web.Host.Startup
             services.AddSignalR();
 #endif
 
-            // 这段代码作用是添加IdentityServer服务，和Cms网站的认证是无关的。但是
-            // AddIdentityServer()会自动添加名为"idsrv"的认证，用于IdentityServer服务
-            // 自身的认证，他的方式Cookies认证类似，默认跳转到/account/login登陆，下
-            // 面指定了地址为"/passport/account/login"。
+            // 添加IdentityServer服务，同时也就为Host网站添加了名为"idsrv"的Cookie认证。
+            // 认证默认跳转到/account/login登陆，下面指定了地址为"/passport/account/login"。
             services.AddIdentityServer(options =>
             {
                 options.UserInteraction.LoginUrl = "/passport/account/login";
@@ -108,11 +106,8 @@ namespace Cms.Web.Host.Startup
             .AddAbpIdentityServer<User>()
             .AddRedirectUriValidator<AnyRedirectUriValidator>();
 
-            // 这段代码是启用Host这个网站的Bearer认证，因Host与IdentityServer合并
-            // 在同一网站，所以Host的Mvc页面已经具备Cookie认证，就不需要添再添加
-            // Cookie认证了。IdentityServer要从Host网站剥离出，就需要添加Cookie认
-            // 证来保护Mvc页面。客户端程序调用WebApi不会附带Cookie，这里添加了“Bearer”
-            // 就是用来认证WebApi的。
+            // 虽然启用IdentityServer时已经添加了Cookies认证，但是任然要有调用"AddCookie()"，否则登陆成功不能跳转回源地址。
+            // 客户端程序调用WebApi不会附带Cookie，这里添加了“Bearer”认证是用来给WebApi用的。
             services.AddAuthentication()
                 .AddCookie()
                 .AddIdentityServerAuthentication("Bearer", options =>
@@ -169,9 +164,10 @@ namespace Cms.Web.Host.Startup
                 options =>
                 {
                     options.IocManager.IocContainer.AddFacility<LoggingFacility>(f => f.UseAbpLog4Net().WithConfig("log4net.config"));
-                    var plugPath = GetAppModulePath();
-                    if(plugPath != null)
-                        options.PlugInSources.AddFolder(plugPath, SearchOption.TopDirectoryOnly);
+                    var pluginPath = GetAppModulePath();
+                    if(pluginPath != null)
+                        options.PlugInSources.AddFolder(pluginPath, SearchOption.TopDirectoryOnly);
+                    options.PlugInSources.AddTypeList(devProjects.Select(project => project.AbpModule).ToArray());
                 }
             );
         }
@@ -193,11 +189,12 @@ namespace Cms.Web.Host.Startup
 
             // 这个中间件把"Bearer"认证的中Jwt附带的用户信息写入Context，
             // 使得不带Cookie的客户端程序使用JwtToken也能访问WebApi。
-            app.UseJwtTokenMiddleware("Bearer");
+//            app.UseJwtTokenMiddleware("Bearer");
 
             //启用认证
             app.UseIdentityServer();
             app.UseStaticFiles();
+            app.UseEmbeddedFiles();
             app.UseDeveloperStaticFiles(devProjects, env);
 
             app.UseAbpRequestLocalization();
@@ -238,7 +235,7 @@ namespace Cms.Web.Host.Startup
         private string GetAppModulePath()
         {
             var entryPath = Assembly.GetEntryAssembly().Location;
-            var modulePath = $"{Path.GetDirectoryName(entryPath)}{Path.DirectorySeparatorChar}app_module";
+            var modulePath = $"{Path.GetDirectoryName(entryPath)}{Path.DirectorySeparatorChar}app_modules";
             if (Directory.Exists(modulePath))
                 return modulePath;
 

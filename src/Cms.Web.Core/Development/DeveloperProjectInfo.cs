@@ -22,5 +22,10 @@ namespace Cms.Web.Core
         /// 项目的静态文件文件夹。例如“wwwroot”
         /// </summary>
         public string StaticFilePath { get; set; }
+
+        /// <summary>
+        /// 应用程序Abp的Module，用于开发时加载。
+        /// </summary>
+        public Type AbpModule { get; set; }
     }
 }
