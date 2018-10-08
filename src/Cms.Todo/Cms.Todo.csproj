@@ -1,21 +1,18 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="abp" Version="3.5.0" />
-    <PackageReference Include="Abp.AspNetCore" Version="3.5.0" />
+    <PackageReference Include="abp" Version="3.8.3" />
+    <PackageReference Include="Abp.AspNetCore" Version="3.8.3" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Migrator\" />
     <Folder Include="Application\Dtos\" />
     <Folder Include="Web\" />
-  </ItemGroup>
-  <ItemGroup>
-    <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.0" />
   </ItemGroup>
 
   <ItemGroup>
